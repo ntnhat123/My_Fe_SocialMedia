@@ -1,0 +1,35 @@
+import React, { useEffect } from 'react'
+import Content from '../../components/MainContent/Content'
+import ProfileLeft from '../../components/Leftprofile/ProfileLeft'
+import RightFriend from '../../components/Right/RightFriend'
+import Sidebar from '@/components/Sidebar/Sidebar'
+import { useRouter } from 'next/router'
+import { useAuth } from '@/context/authContext'
+
+const Homecontainers = () => {
+  const router = useRouter()
+  const { user } = useAuth()
+  useEffect(() => {
+    if(!user){
+      router.push('/login')
+    }
+  },[user])
+  
+  return <>
+      <div className='h-full w-full py-3 px-5 bg-gray-200'>
+        <Sidebar/>
+        {/* <div className='flex mt-5'>
+          <div className='flex flex-1 w-full px-8 '>
+            <ProfileLeft/>
+          </div>
+          <div className='flex flex-1 w-full overflow-auto no-scrollbar'>
+            <Content  />
+          </div>
+          <div className='flex flex-1 flex-col  px-5'>
+              <RightFriend />
+          </div>
+        </div> */}
+      </div>
+  </>
+}
+export default Homecontainers
