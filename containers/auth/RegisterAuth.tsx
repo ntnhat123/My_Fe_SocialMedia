@@ -100,7 +100,7 @@ const RegisterAuth = (props: Props) => {
                 <button
                     type="submit"
 
-                    className="bg-blue-500 text-white px-20  py-2 mt-10  rounded-full hover:bg-blue-600 transition duration-300 ease-in-out"
+                    className="bg-blue-500 text-white px-20  py-2 mt-10 w-full hover:bg-blue-600 transition duration-300 ease-in-out"
                 >
                     Register
                 </button>

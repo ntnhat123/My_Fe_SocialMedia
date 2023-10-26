@@ -5,6 +5,7 @@ import RightFriend from '../../components/Right/RightFriend'
 import Sidebar from '@/components/Sidebar/Sidebar'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/authContext'
+import Link from 'next/link'
 
 const Homecontainers = () => {
   const router = useRouter()
@@ -16,7 +17,7 @@ const Homecontainers = () => {
   },[user])
   
   return <>
-      <div className='h-full w-full py-3 px-5 bg-gray-200'>
+      <div className='h-full w-full md:py-3 md:px-5 bg-gray-200'>
         <Sidebar/>
         {/* <div className='flex mt-5'>
           <div className='flex flex-1 w-full px-8 '>

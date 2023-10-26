@@ -97,7 +97,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const autoLogin = async () => {
         const token =  await getTokenLocalStorage()
         if(!token){
-            router.push('/login')
+            if(router.pathname !== '/register'){
+                router.push('/login')
+            }else{
+                router.push('/register')
+            }
         }
         try{
             const res = await loginbyToken(token as string)
