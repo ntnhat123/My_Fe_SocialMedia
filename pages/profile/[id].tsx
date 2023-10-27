@@ -29,13 +29,13 @@ const Profile = () => {
     return (
         <div className=' w-full '> 
             <div className='xl:mx-52  bg-white  relative'>
-                <div className='bg-red-400 h-72 rounded-b-xl'>
-                    
+                <div className='bg-gradient-to-t from-purple-400 via-pink-500 to-red-500 h-64 w-full rounded-b-3xl'>
+
                 </div>
                 <div className='flex -my-5'> 
                     <div className=' flex justify-between w-full h-full mx-7'>
                         <div className='flex rounded-full '>
-                            <div className='w-40 md:scale-100 scale-90 '>
+                            <div className='w-40 h-40 rounded-full md:scale-100 scale-90 overflow-hidden '>
                                 <img src={profile.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
                             </div>
                             <div className='flex flex-col  justify-center items-start md:ml-7 '>
@@ -71,7 +71,7 @@ const Profile = () => {
                                         <TransitionsModal />
                                     </div>
                                     <div className='bg-white mt-3 rounded-lg my-3'>
-                                        <Listpost />
+                                        <Listpost  />
                                     </div>
                                 </div>
                         </div>

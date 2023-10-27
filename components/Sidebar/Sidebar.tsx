@@ -57,30 +57,16 @@ const Sidebar = () => {
         </div>
         <div className="w-1/4  justify-end md:flex hidden">
           <p className="p-2 group-hover:opacity-80">{user?.fullName}</p>
-          <div className="flex items-center justify-center rounded-full bg-gray-400 w-10 h-10 hover:rounded-full">
+          <div className="flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full">
             <Link href={`/profile/${user?._id}`}>
               <img
                 src={user?.avatar}
                 alt="Profile"
-                className="rounded-full group-hover:opacity-80"
+                className="rounded-full group-hover:opacity-80 "
               />
             </Link>
           </div>
         </div>
-        {/* <div className='flex items-center'>
-              <div className='relative group flex'>
-                <p className="p-2 group-hover:opacity-80">{user.fullName}</p>
-                <div className='flex items-center justify-center rounded-full bg-gray-400 w-10 h-10 hover:rounded-full'>
-                  <img
-                    src="https://scontent.fdad1-4.fna.fbcdn.net/v/t39.30808-6/361606265_3446022385728396_458335017174884602_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=mNTeqb676rQAX-L0o-q&_nc_ht=scontent.fdad1-4.fna&oh=00_AfA27Ib7d1Lbqj-k75F7ZekKrnwN3ApZjCTfT5EJuMDGTw&oe=651E4190"
-                    alt="Profile"
-                    className='rounded-full group-hover:opacity-80'
-                  />
-                </div>
-                
-              </div>
-              
-            </div> */}
       </div>
     </>
   );

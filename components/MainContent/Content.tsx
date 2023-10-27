@@ -5,11 +5,12 @@ import { BsFillCameraVideoFill } from 'react-icons/bs'
 import { BsImages } from 'react-icons/bs'
 import { BsFillFileEarmarkPostFill } from 'react-icons/bs'
 import { BiVideo } from 'react-icons/bi'
-
+import Listpost from '../Post/Listpost'
+import { IUser } from '@/model/user'
 
 type Props = {}
 
-const Content = (props: Props) => {
+const Content = () => {
   return <>
     <div className='flex flex-col w-full h-full '>
         <div className="flex flex-col ">
@@ -26,7 +27,7 @@ const Content = (props: Props) => {
             </div>
 
 
-            <div className='bg-white'>
+            {/* <div className='bg-white'>
                 <div className='flex  my-1 px-7 py-4 border-b'>
                     
                         <img src=
@@ -54,7 +55,9 @@ const Content = (props: Props) => {
                     </button>
                 </div>
 
-            </div>
+            </div> */}
+            <Listpost />
+            
         </div>
         
     </div>

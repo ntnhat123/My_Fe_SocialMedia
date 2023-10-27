@@ -3,4 +3,7 @@ export const apiRouter = {
     authRegister: '/auth/register',
     loginByToken: '/auth/loginToken',
     getUserById: '/user/user',
+    
+    //post
+    getPost: '/post/getPost'
 }

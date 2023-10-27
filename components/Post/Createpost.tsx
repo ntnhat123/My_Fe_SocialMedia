@@ -3,9 +3,13 @@ import { FaMapMarkerAlt, FaUserTag } from 'react-icons/fa';
 import { IoMdImages, } from 'react-icons/io';
 import {MdInsertEmoticon, MdVideocam} from 'react-icons/md'
 import { PiFlagFill } from 'react-icons/pi';
+import { IUser } from '@/model/user';
+import { useAuth } from '@/context/authContext';
 
-export default function TransitionsModal() {
+export default function TransitionsModal(
+) {
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
   const [inputValue, setInputValue] = useState('');
   const [showButtonBackground, setShowButtonBackground] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -24,8 +28,8 @@ export default function TransitionsModal() {
   return (
     <div className="text-center flex flex-col py-3">
       <div className='flex w-full justify-start items-center mx-3 gap-2 border-b-2 pb-3'>
-        <div className='flex'>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/800px-User-avatar.svg.png" alt="" className='overflow-hidden bg-slate-400 object-cover w-10 rounded-full' />
+        <div className='w-10 h-10 rounded-full overflow-hidden'>
+          <img src={user?.avatar} alt="" className='w-full h-full overflow-hidden object-cover rounded-full' />
         </div>
         <div className='w-full mr-6'>
           <input type="text" placeholder='Bạn đang nghĩ gì?' className='w-full outline-none bg-slate-200 rounded-full py-1 text-lg px-3 ' onClick={handleOpen} />
@@ -51,11 +55,11 @@ export default function TransitionsModal() {
             <div className='flex w-full '>
               <form action="" className='w-full'>
                 <div className='flex justify-start items-center mx-4 gap-2 my-2 '> 
-                    <div className='w-10 rounded-full  bg-slate-500'>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/800px-User-avatar.svg.png" alt="" className='overflow-hidden w-full object-cover rounded-full' />
+                    <div className='w-10 h-10 overflow-hidden rounded-full  bg-slate-500'>
+                        <img src={user?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
                     </div>
                     <div className='font-bold'>
-                       <h1>Nguyễn Thanh Nhật</h1>
+                      <h1>{user?.fullName}</h1>
                     </div>
                 </div>
                 <div className='w-full mb-14'>
@@ -67,7 +71,7 @@ export default function TransitionsModal() {
                 <div className='mx-4 flex'>
                   <div className='flex w-full gap-3 justify-center items-center rounded-xl border-2 p-4 '>
                     <h1 className='font-bold'>Thêm vào bài viết của bạn</h1>
-                    <button className='hover:bg-slate-200 rounded-full text-lime-600 p-2'><IoMdImages size={30} /></button>
+                    <button className='hover:bg-slate-200 rounded-full text-lime-600 p-2' ><IoMdImages size={30} /></button>
                     <button className='hover:bg-slate-200 p-2 rounded-full text-blue-500'><FaUserTag size={30} /></button>
                     <button className='hover:bg-slate-200 p-2 rounded-full text-yellow-500'><MdInsertEmoticon size={30} /></button>
                     <button className='hover:bg-slate-200 p-2 rounded-full text-red-600'><FaMapMarkerAlt size={30} /></button>
