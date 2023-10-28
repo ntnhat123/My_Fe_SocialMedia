@@ -16,12 +16,12 @@ const RegisterAuth = (props: Props) => {
     const [gender, setGender] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
     const [loading, setLoading] = useState(false);
-   const { register } = useAuth();
+    const { register } = useAuth();
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmit(true);
         setLoading(true);
-        register(fullName,email,password,gender)    
+        register(fullName,email,password,gender); 
         setLoading(false);
     }
 

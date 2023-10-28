@@ -5,5 +5,7 @@ export const apiRouter = {
     getUserById: '/user/user',
     
     //post
-    getPost: '/post/getPost'
+    getPost: '/post/getPost',
+    getPostOfUser: '/post/getPostOfUserId',
+    
 }

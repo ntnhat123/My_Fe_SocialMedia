@@ -13,3 +13,12 @@ export const getPostFailure = createAction(
     'ACTION/GET_POST_FAILURE',
 )
 
+export const getPostOfUserRequest = createAction<{id:string}>('ACTION/GET_POST_OF_USER_REQUEST')
+
+export const getPostOfUserSuccess = createAction<IPostPayload>(
+    'ACTION/GET_POST_OF_USER_SUCCESS',
+)
+
+export const getPostOfUserFailure = createAction(
+    'ACTION/GET_POST_OF_USER_FAILURE',
+)

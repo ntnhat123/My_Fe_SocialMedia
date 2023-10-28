@@ -8,22 +8,27 @@ import { getPost } from '@/api/post/post'
 import { IPost } from '@/model/post'
 import { useDispatch, useSelector } from "react-redux"
 import { getPostRequest , getPostSuccess, getPostFailure } from '@/redux/post/actions'
-import { postList } from '@/redux/post/selectors'
+import { postList,postListUser } from '@/redux/post/selectors'
 
 const Listpost = () => {
+    const router = useRouter()
     const { user } = useAuth()
     const listpost = useSelector(postList)
+    const listpostuser = useSelector(postListUser)
+    const listposts = router.pathname === '/profile/[id]' ? listpostuser : listpost
     const [post, setPost] = React.useState<IPost[]>([])
 
     useEffect(() => {
-        setPost(listpost)
-    },[listpost])
+        if (Array.isArray(listposts)) {
+            setPost(listposts);
+        }
+    },[listposts])
     
     return (
-        <div className='flex flex-col w-full h-full'>
+        <div className='flex flex-col w-full h-full '>
             {
-                post.map((post) => (
-                    <div className='flex flex-col w-full h-full'>
+                post?.map((post) => (
+                    <div  className='flex flex-col w-full h-full '>
                         <div className='flex justify-between mx-3'> 
                             <div className='flex items-center my-2 gap-2'>
                                 <div className='w-10 h-10 rounded-full object-cover overflow-hidden'>

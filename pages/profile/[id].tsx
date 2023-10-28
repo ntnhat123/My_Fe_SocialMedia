@@ -5,12 +5,16 @@ import { getUserByIds } from '@/api/user/user'
 import { useAuth } from '@/context/authContext'
 import Listpost from '@/components/Post/Listpost'
 import TransitionsModal from '@/components/Post/Createpost'
+import { useDispatch } from 'react-redux'
+import ListpostUser from '@/components/Post/ListpostUser'
+import { getPostOfUserRequest } from '@/redux/post/actions'
 
 const Profile = () => {
     const { user } = useAuth()
     const router = useRouter()
     const [profile , setProfile] = React.useState<IUser> ({} as IUser)
     const [loading, setLoading] = React.useState<boolean>(false)
+    const dispatch = useDispatch()
 
     const getProfile = async () => {
         try{
@@ -25,7 +29,10 @@ const Profile = () => {
     React.useEffect(() => {
         getProfile()
     }, [router.query.id ])
-    
+
+    React.useEffect(() => {
+        dispatch(getPostOfUserRequest({id: router.query.id as string}))
+    },[router.query.id, dispatch, user])
     return (
         <div className=' w-full '> 
             <div className='xl:mx-52  bg-white  relative'>
@@ -71,7 +78,7 @@ const Profile = () => {
                                         <TransitionsModal />
                                     </div>
                                     <div className='bg-white mt-3 rounded-lg my-3'>
-                                        <Listpost  />
+                                        <ListpostUser/>
                                     </div>
                                 </div>
                         </div>

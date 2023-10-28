@@ -13,3 +13,12 @@ export const postLoading = createSelector(
     (post) => post.loading,
 )
 
+export const postListUser = createSelector(
+    selectPost,
+    (post) => post.listPostOfUser,
+)
+
+export const postLoadingUser = createSelector(
+    selectPost,
+    (post) => post.loading,
+)

@@ -10,5 +10,14 @@ const getPost = async () => {
         throw error;
     }
 }
+const getPostById = async (id: string) => {
+    try{
+        const url = apiRouter.getPostOfUser + `/${id}`;
+        const response = await axiosClient.get<IPostPayload>(url);
+        return response.data.data;
+    }   catch (error) {
+        throw error;
+    }
+}
 
-export { getPost }
+export { getPost, getPostById }
