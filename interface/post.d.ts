@@ -5,3 +5,9 @@ export interface IPostPayload {
     data: IPost[];
     status: boolean;
 }
+
+
+export interface IDeletePostPayload {
+    message: string;
+    status: boolean;
+}

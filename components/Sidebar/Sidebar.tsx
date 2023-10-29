@@ -56,7 +56,7 @@ const Sidebar = () => {
           })}
         </div>
         <div className="w-1/4  justify-end md:flex hidden">
-          <p className="p-2 group-hover:opacity-80">{user?.fullName}</p>
+          <p className="p-2 group-hover:opacity-80 font-bold">{user?.fullName}</p>
           <div className="flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full">
             <Link href={`/profile/${user?._id}`}>
               <img
