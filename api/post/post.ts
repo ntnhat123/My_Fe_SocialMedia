@@ -2,13 +2,14 @@ import axiosClient from "@/lib/api/axiosClient";
 import { apiRouter } from "@/config/apiRouter";
 import { IPostPayload,IDeletePostPayload } from "@/interface/post";
 
-const createPosts = async (content:string,images:string) => {
-    const data = { content,images };
+const createPosts = async (content:string,images:string[],usercreator:string) => {
+    const data = { content,images,usercreator };
     const url = apiRouter.createPost;
     try {
         const res = await axiosClient.post<IPostPayload>(url, data);
-        return res.data.data;
-    } catch (error) {
+        return res.data;
+    }
+    catch (error) {
         throw error;
     }
 }

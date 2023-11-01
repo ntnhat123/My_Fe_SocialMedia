@@ -29,8 +29,7 @@ const Listpost = () => {
 
     const handleDeletePost = async (idPost: string) => {
         try {
-            console.log(idPost)
-            const res = await deletePosts(idPost)
+            await deletePosts(idPost)
             const newPost = post.filter((post) => post._id !== idPost)
             setPost(newPost)
         } catch (error) {

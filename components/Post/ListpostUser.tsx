@@ -25,8 +25,9 @@ const ListpostUser = () => {
     },[router.query.id, dispatch, user])
     
     return (
-        
-        <Listpost />
+        <div className=''>
+            <Listpost />
+        </div>
     )
 }
 

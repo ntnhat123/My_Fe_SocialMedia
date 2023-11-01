@@ -19,7 +19,7 @@ export default function TransitionsModal(
   const [inputValue, setInputValue] = useState('');
   const [showButtonBackground, setShowButtonBackground] = useState(false);
   const dispatch = useDispatch();
-  const [inputImage, setInputImage] = useState('');
+  const [inputImage, setInputImage] = useState<any>('');
   
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,23 +34,39 @@ export default function TransitionsModal(
     }
   };
 
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const type = ['image/png', 'image/jpeg', 'image/jpg'];
+    const file = e.target.files?.[0];
+    if (file && type.includes(file.type)) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setInputImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setInputImage(null);
+      alert('Chỉ được upload file ảnh');
+    }
+  };
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputValue.length > 0) {
-      const data = await createPosts(inputValue, inputImage)
-      if (data) {
+      const res = await createPosts(inputValue, inputImage, user?._id as string)
+      if (res) {
         dispatch(getPostRequest());
-        dispatch(getPostOfUserRequest({ id: router.query.id as string }));
-        handleInputChange(
-          { target: { value: '' } } as React.ChangeEvent<HTMLInputElement>
-        );
-        setInputImage('');
+        dispatch(getPostOfUserRequest({ id: user?._id as string }));
+        setInputValue('');
+        setInputImage(null);
         handleClose();
       }
+    } else {
+      alert('Bạn chưa nhập gì');
     }
-  }
+  };
+  
   return (
-    <div className="text-center flex flex-col py-3">
+    <div className="text-center flex flex-col py-3 bg-white mb-1 rounded-lg">
       <div className='flex w-full justify-start items-center mx-3 gap-2 border-b-2 pb-3'>
         <div className='w-10 h-10 rounded-full overflow-hidden'>
           <img src={user?.avatar} alt="" className='w-full h-full overflow-hidden object-cover rounded-full' />
@@ -73,12 +89,11 @@ export default function TransitionsModal(
       {open && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-slate-500/20" onClick={handleClose}>
           <div className="absolute bg-white rounded shadow-lg w-[500px]"  onClick={(e) => e.stopPropagation()}>
-            <form onSubmit={handleSubmit} >
               <div className='py-2 border-b-2'>
                 <h1 className='font-bold text-2xl'>Tạo bài viết</h1>
               </div>
               <div className='flex w-full '>
-                <form action="" className='w-full'>
+                <form action="" onSubmit={handleSubmit} className='w-full'>
                   <div className='flex justify-start items-center mx-4 gap-2 my-2 '> 
                       <div className='w-10 h-10 overflow-hidden rounded-full  bg-slate-500'>
                           <img src={user?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
@@ -99,7 +114,7 @@ export default function TransitionsModal(
                         <label htmlFor="file-input">
                           <div className='hover:bg-slate-200 p-2 rounded-full text-lime-500'>
                               <IoMdImages size={30} />
-                              <input type="file" className='hidden' id="file-input" />
+                              <input type="file" onChange={handleImageChange} className='hidden' id="file-input" />
                           </div>
                         </label>
                       <div className='hover:bg-slate-200 p-2 rounded-full text-blue-500'><FaUserTag size={30} /></div>
@@ -114,7 +129,6 @@ export default function TransitionsModal(
                   </div>
                 </form>
               </div>
-            </form>
           </div>
           
         </div>

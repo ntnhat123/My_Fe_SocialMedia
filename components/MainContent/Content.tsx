@@ -7,6 +7,7 @@ import { BsFillFileEarmarkPostFill } from 'react-icons/bs'
 import { BiVideo } from 'react-icons/bi'
 import Listpost from '../Post/Listpost'
 import { IUser } from '@/model/user'
+import TransitionsModal from '../Post/Createpost'
 
 type Props = {}
 
@@ -14,7 +15,7 @@ const Content = () => {
   return <>
     <div className='flex flex-col w-full h-full '>
         <div className="flex flex-col ">
-            
+            <TransitionsModal />
             <Listpost />
             
         </div>
