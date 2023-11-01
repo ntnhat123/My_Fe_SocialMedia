@@ -5,7 +5,7 @@ import {MdInsertEmoticon, MdVideocam} from 'react-icons/md'
 import { PiFlagFill } from 'react-icons/pi';
 import { IUser } from '@/model/user';
 import { useAuth } from '@/context/authContext';
-import { createPosts } from '@/api/post/post';
+import { createPosts,updatePosts } from '@/api/post/post';
 import { useDispatch,useSelector } from 'react-redux';
 import { getPostOfUserRequest,getPostRequest } from '@/redux/post/actions';
 import { useRouter } from 'next/router';
@@ -51,17 +51,36 @@ export default function TransitionsModal(
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputValue.length > 0) {
-      const res = await createPosts(inputValue, inputImage, user?._id as string)
-      if (res) {
-        dispatch(getPostRequest());
-        dispatch(getPostOfUserRequest({ id: user?._id as string }));
-        setInputValue('');
-        setInputImage(null);
-        handleClose();
+    try{
+      if(router.pathname !== "profile/[id]"){
+        if (inputValue.length > 0) {
+          const res = await createPosts(inputValue, inputImage, user?._id as string)
+          if (res) {
+            dispatch(getPostRequest());
+            dispatch(getPostOfUserRequest({ id: user?._id as string }));
+            setInputValue('');
+            setInputImage(null);
+            handleClose();
+          }
+        } else {
+          alert('Bạn chưa nhập gì');
+        }
+      } else{
+        if (inputValue.length > 0) {
+          const res = await updatePosts(router.query.id as string,inputValue, inputImage)
+          if (res) {
+            dispatch(getPostRequest());
+            dispatch(getPostOfUserRequest({ id: user?._id as string }));
+            setInputValue('');
+            setInputImage(null);
+            handleClose();
+          }
+        }else {
+          alert('Bạn chưa nhập gì');
+        }
       }
-    } else {
-      alert('Bạn chưa nhập gì');
+    }catch(error){
+      console.log(error)
     }
   };
   
@@ -90,10 +109,10 @@ export default function TransitionsModal(
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-slate-500/20" onClick={handleClose}>
           <div className="absolute bg-white rounded shadow-lg w-[500px]"  onClick={(e) => e.stopPropagation()}>
               <div className='py-2 border-b-2'>
-                <h1 className='font-bold text-2xl'>Tạo bài viết</h1>
+                <h1 className='font-bold text-2xl'>{router.pathname !== "profile/[id]" ? "Tạo bài viết" : "Chỉnh sửa bài viết"}</h1>
               </div>
               <div className='flex w-full '>
-                <form action="" onSubmit={handleSubmit} className='w-full'>
+                <form onSubmit={handleSubmit} className='w-full'>
                   <div className='flex justify-start items-center mx-4 gap-2 my-2 '> 
                       <div className='w-10 h-10 overflow-hidden rounded-full  bg-slate-500'>
                           <img src={user?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
@@ -103,10 +122,7 @@ export default function TransitionsModal(
                       </div>
                   </div>
                   <div className='w-full mb-14'>
-                      <input type="text"
-                        value={inputValue}
-                        onChange={handleInputChange}
-                      className='w-full h-full px-4 outline-none text-2xl' placeholder='Bạn đang nghĩ gì ?' />
+                      <input type="text" value={inputValue} onChange={handleInputChange} className='w-full h-full px-4 outline-none text-2xl' placeholder='Bạn đang nghĩ gì ?' />
                   </div>
                   <div className='mx-4 flex'>
                     <div className='flex w-full gap-3 justify-center items-center rounded-xl border-2 p-4 '>
