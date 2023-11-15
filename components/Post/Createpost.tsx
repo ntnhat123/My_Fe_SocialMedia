@@ -10,9 +10,12 @@ import { useDispatch,useSelector } from 'react-redux';
 import { getPostOfUserRequest,getPostRequest } from '@/redux/post/actions';
 import { useRouter } from 'next/router';
 
+interface IProps {
+  profile: IUser;
+}
 
-export default function TransitionsModal(
-) {
+export default function CreatePost({ profile }: IProps) {
+  // console.log(profile)
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
@@ -127,7 +130,7 @@ export default function TransitionsModal(
                   <div className='mx-4 flex'>
                     <div className='flex w-full gap-3 justify-center items-center rounded-xl border-2 p-4 '>
                       <h1 className='font-bold'>Thêm vào bài viết của bạn</h1>
-                        <label htmlFor="file-input">
+                        <label htmlFor="file-input" className='cursor-pointer'>
                           <div className='hover:bg-slate-200 p-2 rounded-full text-lime-500'>
                               <IoMdImages size={30} />
                               <input type="file" onChange={handleImageChange} className='hidden' id="file-input" />

@@ -29,13 +29,13 @@ const Homecontainers = () => {
         <Sidebar/>
         <div className='flex mt-5'>
           <div className='flex flex-1 w-full px-8 '>
-            <ProfileLeft/>
+            {/* <ProfileLeft/> */}
           </div>
           <div className='flex flex-1 w-full overflow-auto no-scrollbar'>
             <Content  />
           </div>
           <div className='flex flex-1 flex-col  px-5'>
-              <RightFriend />
+              {/* <RightFriend /> */}
           </div>
         </div>
       </div>

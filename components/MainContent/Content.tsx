@@ -9,8 +9,6 @@ import Listpost from '../Post/Listpost'
 import { IUser } from '@/model/user'
 import TransitionsModal from '../Post/Createpost'
 
-type Props = {}
-
 const Content = () => {
   return <>
     <div className='flex flex-col w-full h-full '>

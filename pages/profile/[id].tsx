@@ -8,12 +8,18 @@ import TransitionsModal from '@/components/Post/Createpost'
 import { useDispatch } from 'react-redux'
 import ListpostUser from '@/components/Post/ListpostUser'
 import { getPostOfUserRequest } from '@/redux/post/actions'
+import ModalEditUser from '@/components/EditProfile/ModalEditProflie'
 
 const Profile = () => {
     const { user } = useAuth()
     const router = useRouter()
     const [profile , setProfile] = React.useState<IUser> ({} as IUser)
     const [loading, setLoading] = React.useState<boolean>(false)
+    const [openmodelEditUser, setOpenmodelEditUser] = React.useState<boolean>(false)    
+
+    // const toggleModal = ()=> setOpenmodelEditUser(openmodelEditUser=> !openmodelEditUser);
+    const handleOpen = () => setOpenmodelEditUser(true); 
+    const handleClose = () => setOpenmodelEditUser(false);
     const dispatch = useDispatch()
 
     const getProfile = async () => {
@@ -43,10 +49,10 @@ const Profile = () => {
                     <div className=' flex justify-between w-full h-full mx-7'>
                         <div className='flex rounded-full '>
                             <div className='w-40 h-40 rounded-full md:scale-100 scale-90 overflow-hidden '>
-                                <img src={profile.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
+                                <img src={user?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
                             </div>
                             <div className='flex flex-col  justify-center items-start md:ml-7 '>
-                                <h1 className='font-bold text-2xl'>{profile.fullName}</h1>
+                                <h1 className='font-bold text-2xl'>{user?.fullName}</h1>
                                 <div className="flex flex-col gap-2 md:flex-row ">
                                     <div className="flex items-center">
                                         <span className="font-bold">{ profile.followers?.length}</span><span>người theo dõi</span>
@@ -60,7 +66,19 @@ const Profile = () => {
                             </div>
                         </div>
                         <div className='flex justify-center w-auto hiden md:block'>
-                            <button className='bg-slate-100 px-5 md:my-16 hidden md:block rounded-lg'>Chỉnh sửa trang cá nhân</button>
+                            <button className='bg-slate-100 px-5 md:my-16 hidden md:block rounded-lg' onClick={handleOpen}>Chỉnh sửa trang cá nhân</button>
+                            {
+                                openmodelEditUser && (
+                                    <div className="fixed inset-0 flex items-center justify-center z-50 bg-slate-500/20" onClick={handleClose} >
+                                        <div className="absolute bg-white rounded shadow-lg md:w-2/4"  onClick={(e) => e.stopPropagation()}>
+                                            <ModalEditUser profile={profile} setProfile={setProfile}
+                                                setOpenmodelEditUser={setOpenmodelEditUser}
+                                                openmodelEditUser={openmodelEditUser}
+                                            />
+                                        </div>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </div>
@@ -75,7 +93,9 @@ const Profile = () => {
                                 </div>
                                 <div className="md:w-3/5 ">
                                     <div className='bg-white mt-3 rounded-lg'>
-                                        <TransitionsModal />
+                                        <TransitionsModal 
+                                            profile={profile} 
+                                        />
                                     </div>
                                     <div className='bg-white mt-3 rounded-lg my-3'>
                                         <ListpostUser/>

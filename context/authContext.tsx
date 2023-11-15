@@ -5,7 +5,7 @@ import { IUser } from '@/model/user'
 import { getLoginByEmail } from '@/api/auth/login'
 import { getRegisterByEmail } from '@/api/auth/register'
 import { loginbyToken } from '@/api/auth/loginBytoken'
-import { getUserByIds } from '@/api/user/user'
+import { getUserByIds, updateUser } from '@/api/user/user'
 
 
 interface IAuthContext {
@@ -16,6 +16,15 @@ interface IAuthContext {
         password: string,
         gender: string
       ) => void
+    editUser: (
+        id: string,
+        fullName: string,
+        avatar: string,
+        gender: string,
+        address: string,
+        story: string,
+        mobile: string,
+    ) => void
     logout: () => void
     user: IUser | null
     loading: boolean
@@ -28,6 +37,7 @@ const AuthContext = createContext<IAuthContext>({
     login: () => {},
     register: () => {},
     logout: () => {},
+    editUser: () => {},
     user: {} as IUser,
     loading: false,
     error: '',
@@ -89,6 +99,31 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 setLoading(false)
             }
         }   catch(error){
+            console.log(error)
+            setLoading(false)
+        }
+    }
+
+    const editUser = async (
+        id: string,
+        fullName: string,
+        avatar: string,
+        gender: string,
+        address: string,
+        story: string,
+        mobile: string,
+    ) => {
+        try{
+            const res = await updateUser(router.query.id as string, fullName, avatar,gender, address, story, mobile);
+            console.log(res)
+            if(res){
+                    setUser(res.data)
+                    setLoading(true)
+            }else{
+                    setError(res)
+                    setLoading(false)
+            }
+        } catch(error){
             console.log(error)
             setLoading(false)
         }
@@ -171,6 +206,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const authContextValue : IAuthContext = {
         login,
         register,
+        editUser,
         logout,
         user,
         loading,
