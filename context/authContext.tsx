@@ -6,6 +6,7 @@ import { getLoginByEmail } from '@/api/auth/login'
 import { getRegisterByEmail } from '@/api/auth/register'
 import { loginbyToken } from '@/api/auth/loginBytoken'
 import { getUserByIds, updateUser } from '@/api/user/user'
+import { getLogout } from '@/api/auth/logout'
 
 
 interface IAuthContext {
@@ -176,11 +177,31 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [user]);
     
 
-    const logout = () => {
-        localStorage.removeItem('token')
-        setUser({} as IUser)
-        setToken('')
-        router.push('/login')
+    const logout = async () => {
+        // vieets code logout
+        try {
+            const res = await getLogout();
+            console.log(res)
+            if (res.status === 200) {
+                if (res.data.status) {
+                setUser({} as IUser);
+                setToken("");
+                setTokenLocalStorage("");
+                router.push("/login");
+                setLoading(true);
+                } else {
+                setError(res.data.message);
+                setLoading(false);
+                }
+            } else {
+                setError(res.data.message);
+                setLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
+
     }
 
     const getUserById = async (id: string) => {

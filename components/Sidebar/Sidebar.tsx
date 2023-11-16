@@ -5,12 +5,22 @@ import { getUserByIds } from '@/api/user/user'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/authContext'
 import { SidebarData } from '@/data/sidebar'
-import Link from 'next/link'
+
+
 
 const Sidebar = () => {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user,logout } = useAuth()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    // Add your logout logic here
+    logout();
+  };
   return (
     <>
       <div className="flex md:flex-row flex-col items-center justify-between h-full w-full md:py-5 md:px-8 bg-white ">
@@ -55,18 +65,32 @@ const Sidebar = () => {
             );
           })}
         </div>
-        <div className="w-1/4  justify-end md:flex hidden">
+        {/* <div className="w-1/4  justify-end md:flex hidden">
           <p className="p-2 group-hover:opacity-80 font-bold">{user?.fullName}</p>
           <div className="flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full">
             <Link href={`/profile/${user?._id}`}>
-              <img
-                src={user?.avatar}
-                alt="Profile"
-                className="rounded-full group-hover:opacity-80 "
-              />
+              <img src={user?.avatar} alt="Profile" className="rounded-full group-hover:opacity-80 " style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
             </Link>
           </div>
+        </div> */}
+        <div className="w-1/4 justify-end md:flex hidden relative">
+        <div className="p-2 group-hover:opacity-80 font-bold" onClick={toggleDropdown}>
+          {user?.fullName}
         </div>
+        <div className="flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full" onClick={toggleDropdown}>
+            <img src={user?.avatar} alt="Profile" className="rounded-full group-hover:opacity-80" style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
+        </div>
+        {isDropdownOpen && (
+          <div className="absolute right-0 mt-10 bg-white rounded-lg shadow-md">
+            <button className="block w-full text-left px-4 py-2 hover:bg-gray-200" onClick={() => router.push(`/profile/${user?._id}`)}>
+              Trang cá nhân
+            </button>
+            <button className="block w-full text-left px-4 py-2 hover:bg-gray-200" onClick={handleLogout}>
+              Đăng xuất
+            </button>
+          </div>
+        )}
+      </div>
       </div>
     </>
   );

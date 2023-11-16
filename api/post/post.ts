@@ -33,7 +33,7 @@ const updatePosts = async (idPost: string, content: string, images: string[]) =>
     const data = { id: idPost, content, images };
     const url = apiRouter.updatePost;
     try {
-        const res = await axiosClient.post<IDeletePostPayload>(url, data);
+        const res = await axiosClient.post<IPostPayload>(url, data);
         return res.data;
     } catch (error) {
         throw error;

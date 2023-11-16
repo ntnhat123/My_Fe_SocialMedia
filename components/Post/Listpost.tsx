@@ -11,6 +11,8 @@ import { getPostRequest , getPostSuccess, getPostFailure,getPostOfUserRequest,ge
 import { postList,postListUser } from '@/redux/post/selectors'
 import { deletePosts } from '@/api/post/post'
 import { MdOutlineClose } from 'react-icons/md'
+import CreatePost from '@/components/Post/Createpost'
+
 
 const Listpost = () => {
     const router = useRouter()
@@ -54,19 +56,16 @@ const Listpost = () => {
         setModalVisible(false);
     };
 
-    const handleUpdatePost = () => {
 
-    };
-    
     return (
-        <div className='flex flex-col w-full h-full '>
+        <div className='flex flex-col w-full h-full overflow-y-auto'>
             {
                 post?.map((post,index) => (
                     <div key={index} className='flex flex-col w-full h-full bg-white rounded-lg mb-1'>
                         <div className='flex justify-between mx-3'> 
                             <div className='flex items-center my-2 gap-2'>
                                 <div className='w-10 h-10 rounded-full object-cover overflow-hidden'>
-                                    <img src={post?.usercreator?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
+                                    <img src={post?.usercreator?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
                                 </div>
                                 <div className='flex flex-col items-start'>
                                     <h1 className='font-bold text-xl'>{post.usercreator?.fullName}</h1>
@@ -82,7 +81,10 @@ const Listpost = () => {
                                 </div>
                             </div>
                             <div className='flex justify-center items-center'>
-                                <button className=' rounded-full hover:bg-slate-200 p-3' onClick={handleUpdatePost}><FaEllipsisH /></button>
+                                <button className=' rounded-full hover:bg-slate-200 p-3'
+                                    onClick={() => setUpdatePostId(post._id)}
+                                    
+                                ><FaEllipsisH /></button>
                                 <button className=' rounded-full hover:bg-slate-200 p-3' onClick={()=> handleDeletePost(post._id)}><MdOutlineClose /></button>
                                 {deletePostId === post._id && (
                                      <div className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'>

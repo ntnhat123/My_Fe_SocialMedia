@@ -48,8 +48,8 @@ const Profile = () => {
                 <div className='flex -my-5'> 
                     <div className=' flex justify-between w-full h-full mx-7'>
                         <div className='flex rounded-full '>
-                            <div className='w-40 h-40 rounded-full md:scale-100 scale-90 overflow-hidden '>
-                                <img src={user?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
+                            <div className='w-40 h-40 rounded-full md:scale-100 scale-90 overflow-hidden'>
+                                <img src={user?.avatar} alt="" className='overflow-hidden w-full h-full object-cover rounded-full' />
                             </div>
                             <div className='flex flex-col  justify-center items-start md:ml-7 '>
                                 <h1 className='font-bold text-2xl'>{user?.fullName}</h1>
@@ -61,8 +61,6 @@ const Profile = () => {
                                         <span className="font-bold">{ profile.following?.length }</span><span>đang theo dõi</span>
                                     </div>
                                 </div>
-
-                              
                             </div>
                         </div>
                         <div className='flex justify-center w-auto hiden md:block'>

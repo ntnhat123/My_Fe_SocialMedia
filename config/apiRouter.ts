@@ -1,6 +1,7 @@
 export const apiRouter = {
     authLogin: '/auth/login',
     authRegister: '/auth/register',
+    logout: '/auth/logout',
     loginByToken: '/auth/loginToken',
     getUserById: '/user/user',
     updateUser: '/user/updateUser',

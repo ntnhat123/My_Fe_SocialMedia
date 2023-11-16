@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { FaMapMarkerAlt, FaUserTag } from 'react-icons/fa';
 import { IoMdImages, } from 'react-icons/io';
 import {MdInsertEmoticon, MdVideocam} from 'react-icons/md'
@@ -9,12 +9,18 @@ import { createPosts,updatePosts } from '@/api/post/post';
 import { useDispatch,useSelector } from 'react-redux';
 import { getPostOfUserRequest,getPostRequest } from '@/redux/post/actions';
 import { useRouter } from 'next/router';
+import { IPost } from '@/model/post';
 
 interface IProps {
   profile: IUser;
+  updatePost?: boolean;
+  setUpdatePost?: React.Dispatch<React.SetStateAction<IPost>>;
 }
 
-export default function CreatePost({ profile }: IProps) {
+export default function CreatePost({ profile, 
+  updatePost,
+  setUpdatePost
+}: IProps) {
   // console.log(profile)
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
@@ -26,9 +32,7 @@ export default function CreatePost({ profile }: IProps) {
   
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     if (e.target.value.length > 0) {
       setShowButtonBackground(true);
@@ -69,16 +73,19 @@ export default function CreatePost({ profile }: IProps) {
           alert('Bạn chưa nhập gì');
         }
       } else{
+        // nếu là trang profile thì sẽ update post
         if (inputValue.length > 0) {
-          const res = await updatePosts(router.query.id as string,inputValue, inputImage)
+          const res = await updatePosts(user?._id as string,inputValue, inputImage)
+          console.log(res.data)
           if (res) {
             dispatch(getPostRequest());
             dispatch(getPostOfUserRequest({ id: user?._id as string }));
             setInputValue('');
             setInputImage(null);
             handleClose();
+            setUpdatePost
           }
-        }else {
+        } else {
           alert('Bạn chưa nhập gì');
         }
       }
@@ -90,8 +97,8 @@ export default function CreatePost({ profile }: IProps) {
   return (
     <div className="text-center flex flex-col py-3 bg-white mb-1 rounded-lg">
       <div className='flex w-full justify-start items-center mx-3 gap-2 border-b-2 pb-3'>
-        <div className='w-10 h-10 rounded-full overflow-hidden'>
-          <img src={user?.avatar} alt="" className='w-full h-full overflow-hidden object-cover rounded-full' />
+        <div className='w-12 h-10 rounded-full overflow-hidden'>
+          <img src={user?.avatar} alt="" className='w-full h-full overflow-hidden object-cover rounded-full' style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
         </div>
         <div className='w-full mr-6'>
           <input type="text" placeholder='Bạn đang nghĩ gì?' className='w-full outline-none bg-slate-200 rounded-full py-1 text-lg px-3 ' onClick={handleOpen} />
@@ -112,13 +119,13 @@ export default function CreatePost({ profile }: IProps) {
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-slate-500/20" onClick={handleClose}>
           <div className="absolute bg-white rounded shadow-lg w-[500px]"  onClick={(e) => e.stopPropagation()}>
               <div className='py-2 border-b-2'>
-                <h1 className='font-bold text-2xl'>{router.pathname !== "profile/[id]" ? "Tạo bài viết" : "Chỉnh sửa bài viết"}</h1>
+                <h1 className='font-bold text-2xl'>{router.pathname !== "profile/[id]" ? "Tạo bài viết" : "Chỉnh sửa bài viết"} </h1>
               </div>
               <div className='flex w-full '>
                 <form onSubmit={handleSubmit} className='w-full'>
                   <div className='flex justify-start items-center mx-4 gap-2 my-2 '> 
                       <div className='w-10 h-10 overflow-hidden rounded-full  bg-slate-500'>
-                          <img src={user?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
+                          <img src={user?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full'style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
                       </div>
                       <div className='font-bold'>
                         <h1>{user?.fullName}</h1>

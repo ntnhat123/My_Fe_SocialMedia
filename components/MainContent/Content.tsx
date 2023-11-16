@@ -11,7 +11,7 @@ import TransitionsModal from '../Post/Createpost'
 
 const Content = () => {
   return <>
-    <div className='flex flex-col w-full h-full '>
+    <div className='flex flex-col w-full h-full overflow-y-auto scrollbar-hidden' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         <div className="flex flex-col ">
             <TransitionsModal />
             <Listpost />

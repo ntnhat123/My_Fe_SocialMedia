@@ -10,3 +10,8 @@ export interface IInforUserPayload {
     data : IUser;
     message: string;
 }
+
+export interface ILogoutPayload {
+    status: boolean;
+    message: string;
+}

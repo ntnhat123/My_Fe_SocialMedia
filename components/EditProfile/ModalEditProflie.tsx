@@ -22,9 +22,9 @@ export default function ModalEditProfile({
   const { user, editUser } = useAuth();
   const router = useRouter();
   const dispatch = useDispatch();
-  const [inputImage, setInputImage] = useState<any>("");
+  const [inputImage, setInputImage] = useState<any>(profile.avatar);
   const [inputValue, setInputValue] = useState({
-    avatar: "",
+    avatar: inputImage,
     fullName: profile.fullName,
     address: profile.address,
     story: "",
@@ -44,9 +44,9 @@ export default function ModalEditProfile({
         inputValue.story,
         inputValue.mobile
       );
+      console.log(editUser)
       setOpenmodelEditUser(false);
       const response = await getUserByIds(router.query.id as string);
-      
       setProfile(response.data.data)
       dispatch(getPostRequest());
       dispatch(getPostOfUserRequest({ id: router.query.id as string }));
@@ -60,7 +60,6 @@ export default function ModalEditProfile({
       ...inputValue,
       [e.target.id]: e.target.value,
     });
-    //
   };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,79 +79,41 @@ export default function ModalEditProfile({
 
   return (
     <div className="flex flex-col">
-      <form
-        onSubmit={handleUpdateUser}
-        className="flex flex-col justify-center items-center py-5 px-14 gap-y-5"
-      >
+      <form onSubmit={handleUpdateUser} className="flex flex-col justify-center items-center py-5 px-14 gap-y-5">
         <div className="w-32 overflow-hidden rounded-full ">
           <label htmlFor="file-input" className="cursor-pointer">
-            <img src={profile.avatar} className="object-cover" alt="" />
-            <input
-              type="file"
-              onChange={handleImageChange}
-              className="hidden"
-              id="file-input"
-            />
+            <img src={profile.avatar} className="object-cover" alt="" style={{ objectFit: 'cover', aspectRatio: '1 / 1' }}  />
+            <input type="file" onChange={handleImageChange} className="hidden" id="file-input" />
           </label>
         </div>
         <div className="w-full justify-center flex flex-col items-start">
           <label htmlFor="fullName" className="text-gray-500">
             Tên
           </label>
-          <input
-            type="text"
-            id="fullName"
-            value={inputValue.fullName}
-            onChange={handleInputChange}
-            className="border border-gray-300 rounded-md w-full h-10 px-2"
-          />
+          <input type="text" id="fullName" value={inputValue.fullName} onChange={handleInputChange} className="border border-gray-300 rounded-md w-full h-10 px-2" />
         </div>
         <div className="w-full justify-center flex flex-col items-start">
           <label htmlFor="address" className="text-gray-500">
             Địa chỉ
           </label>
-          <input
-            type="text"
-            id="address"
-            value={inputValue.address}
-            onChange={handleInputChange}
-            className="border border-gray-300 rounded-md w-full h-10 px-2"
-          />
+          <input type="text" id="address" value={inputValue.address} onChange={handleInputChange} className="border border-gray-300 rounded-md w-full h-10 px-2" />
         </div>
         <div className="w-full justify-center flex flex-col items-start">
           <label htmlFor="story" className="text-gray-500">
             Tiểu sử
           </label>
-          <input
-            name=""
-            id="story"
-            value={inputValue.story}
-            onChange={handleInputChange}
-            className="border border-gray-300 rounded-md w-full h-10 px-2"
-          />
+          <input name="" id="story" value={inputValue.story} onChange={handleInputChange} className="border border-gray-300 rounded-md w-full h-10 px-2" />
         </div>
         <div className="w-full justify-center flex items-start gap-4">
           <div>
             <label htmlFor="male" className="inline-flex items-center">
-              <input
-                type="radio"
-                id="male"
-                name="gender"
-                value="male"
-                className="htmlForm-radio h-5 w-5 text-blue-600"
-              />
+              <input type="radio" id="male" name="gender" value="male" className="htmlForm-radio h-5 w-5 text-blue-600" />
               <span className="ml-2">Nam</span>
             </label>
           </div>
           <div>
             <label htmlFor="female" className="inline-flex items-center">
-              <input
-                type="radio"
-                id="female"
-                name="gender"
-                value="female"
-                className="form-radio h-5 w-5 text-pink-600"
-              />
+              <input type="radio" id="female" name="gender" value="female" className="form-radio h-5 w-5 text-pink-600" />
               <span className="ml-2">Nữ</span>
             </label>
           </div>

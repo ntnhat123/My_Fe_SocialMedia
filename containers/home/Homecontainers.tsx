@@ -25,13 +25,13 @@ const Homecontainers = () => {
   },[dispatch])
   
   return <>
-      <div className='h-full w-full md:py-3 md:px-5 bg-gray-200'>
+      <div className='h-full w-full md:py-3 md:px-5 bg-gray-200 overflow-y-auto no-scrollbar scrollbar-hidden'>
         <Sidebar/>
         <div className='flex mt-5'>
           <div className='flex flex-1 w-full px-8 '>
             {/* <ProfileLeft/> */}
           </div>
-          <div className='flex flex-1 w-full overflow-auto no-scrollbar'>
+          <div className='flex flex-1 w-full overflow-y-auto no-scrollbar scrollbar-hidden'>
             <Content  />
           </div>
           <div className='flex flex-1 flex-col  px-5'>
