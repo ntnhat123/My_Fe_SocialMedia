@@ -9,7 +9,7 @@ import { IPost } from '@/model/post'
 import { useDispatch, useSelector } from "react-redux"
 import { getPostRequest , getPostSuccess, getPostFailure,getPostOfUserRequest,getPostOfUserFailure,getPostOfUserSuccess } from '@/redux/post/actions'
 import { postList,postListUser } from '@/redux/post/selectors'
-import { deletePosts } from '@/api/post/post'
+import { deletePosts,likePost } from '@/api/post/post'
 import { MdOutlineClose } from 'react-icons/md'
 import CreatePost from '@/components/Post/Createpost'
 import Comments from '@/components/Comments/Comments'
@@ -27,6 +27,7 @@ const Listpost = () => {
     const [modalVisible, setModalVisible] = React.useState(false);
     const [updatePostId, setUpdatePostId] = React.useState<string | null>(null);
     const [showComment, setShowComment] = React.useState<Record<string, boolean>>({});
+    const [likedPosts, setLikedPosts] = React.useState<string[]>([]);
 
     const handleShowComment = (postId: string) => {
         setShowComment((prevShowComments) => ({
@@ -63,6 +64,21 @@ const Listpost = () => {
         setDeletePostId(null);
         setModalVisible(false);
     };
+
+    const handleLikePost = async (idPost: string) => {
+        try{
+            const isAlreadyLiked = likedPosts.includes(idPost);
+            if (isAlreadyLiked) {
+                await likePost(idPost);
+                setLikedPosts((prevLikedPosts) => prevLikedPosts.filter((postId) => postId !== idPost));
+            } else {
+                await likePost(idPost);
+                setLikedPosts((prevLikedPosts) => [...prevLikedPosts, idPost]);
+            }
+        }catch(error){
+            console.log(error)
+        }
+    }
 
     return (
         <div className='flex flex-col w-full h-full overflow-y-auto'>
@@ -130,9 +146,12 @@ const Listpost = () => {
                             </div>
                         </div>
 
-                        <div className='flex justify-center items-center my-2 md:mx-3 text-gray-500'>
-                            <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100'>
-                                <button className='flex justify-center items-center gap-2'><BiLike />Thích</button>
+                        <div className='flex justify-center items-center my-2 md:mx-3 text-gray-500 font-bold'>
+                            <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100' >
+                                <button className={`flex justify-center items-center gap-2 ${likedPosts.includes(post._id) ? 'text-blue-500' : 'text-gray-500'}`} onClick={() => handleLikePost(post._id)}
+                                
+
+                                ><BiLike />Thích</button>
                             </div>
                             <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100'>
                                 <button className='flex justify-center items-center gap-2' onClick={() => handleShowComment(post._id)}><FaRegComment />Bình luận</button>
