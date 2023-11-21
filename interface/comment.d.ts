@@ -2,6 +2,6 @@ import { IComment } from "@/model/comment";
 
 export interface ICommentPayload {
     message: string;
-    data: IComment[];
+    data: IComment;
     status: boolean;
 }

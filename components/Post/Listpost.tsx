@@ -9,9 +9,10 @@ import { IPost } from '@/model/post'
 import { useDispatch, useSelector } from "react-redux"
 import { getPostRequest , getPostSuccess, getPostFailure,getPostOfUserRequest,getPostOfUserFailure,getPostOfUserSuccess } from '@/redux/post/actions'
 import { postList,postListUser } from '@/redux/post/selectors'
-import { deletePosts } from '@/api/post/post'
+import { deletePosts,likePost } from '@/api/post/post'
 import { MdOutlineClose } from 'react-icons/md'
 import CreatePost from '@/components/Post/Createpost'
+import Comments from '@/components/Comments/Comments'
 
 
 const Listpost = () => {
@@ -25,7 +26,15 @@ const Listpost = () => {
     const [deletePostId, setDeletePostId] = React.useState<string | null>(null);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [updatePostId, setUpdatePostId] = React.useState<string | null>(null);
+    const [showComment, setShowComment] = React.useState<Record<string, boolean>>({});
+    const [likedPosts, setLikedPosts] = React.useState<string[]>([]);
 
+    const handleShowComment = (postId: string) => {
+        setShowComment((prevShowComments) => ({
+          ...prevShowComments,
+          [postId]: !prevShowComments[postId],
+        }));
+    };
     useEffect(() => {
         if (listposts) {
             const sortedPosts = [...listposts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -56,6 +65,20 @@ const Listpost = () => {
         setModalVisible(false);
     };
 
+    const handleLikePost = async (idPost: string) => {
+        try{
+            const isAlreadyLiked = likedPosts.includes(idPost);
+            if (isAlreadyLiked) {
+                await likePost(idPost);
+                setLikedPosts((prevLikedPosts) => prevLikedPosts.filter((postId) => postId !== idPost));
+            } else {
+                await likePost(idPost);
+                setLikedPosts((prevLikedPosts) => [...prevLikedPosts, idPost]);
+            }
+        }catch(error){
+            console.log(error)
+        }
+    }
 
     return (
         <div className='flex flex-col w-full h-full overflow-y-auto'>
@@ -68,7 +91,7 @@ const Listpost = () => {
                                     <img src={post?.usercreator?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
                                 </div>
                                 <div className='flex flex-col items-start'>
-                                    <h1 className='font-bold text-xl'>{post.usercreator?.fullName}</h1>
+                                    <h1 className='font-bold text-xl'>{post?.usercreator?.fullName}</h1>
                                     <h1 className='text-gray-500 text-sm'>
                                         { 
                                             (new Date().getTime() - new Date(post?.createdAt).getTime()) / (1000 * 60) < 60 ?
@@ -81,10 +104,7 @@ const Listpost = () => {
                                 </div>
                             </div>
                             <div className='flex justify-center items-center'>
-                                <button className=' rounded-full hover:bg-slate-200 p-3'
-                                    onClick={() => setUpdatePostId(post._id)}
-                                    
-                                ><FaEllipsisH /></button>
+                                <button className=' rounded-full hover:bg-slate-200 p-3' onClick={() => setUpdatePostId(post._id)}><FaEllipsisH /></button>
                                 <button className=' rounded-full hover:bg-slate-200 p-3' onClick={()=> handleDeletePost(post._id)}><MdOutlineClose /></button>
                                 {deletePostId === post._id && (
                                      <div className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'>
@@ -104,8 +124,7 @@ const Listpost = () => {
                         </div>
                         <div className="w-full flex flex-wrap">
                             {post.images?.map((image, index) => (
-                                <div key={index} className={
-                                    `${post.images?.length === 1 ? 'w-full' : post.images?.length === 2 ? 'w-1/2' : 'w-1/3'} px-0.5`
+                                <div key={index} className={ `${post.images?.length === 1 ? 'w-full' : post.images?.length === 2 ? 'w-1/2' : 'w-1/3'} px-0.5`
                                 }>
                                     <img src={image} className="object-cover w-full " alt="" />
                                 </div>
@@ -118,7 +137,8 @@ const Listpost = () => {
                             </div>
                             <div className='flex w-full flex-1 items-end justify-end gap-2'>
                                 <div className='grow-0 flex'>
-                                    {post?.comments?.length > 0 ? `${post?.comments?.length} bình luận` : ``}
+                                    {/* {post?.comments?.comment?.length > 0 ? `${post?.comments?.comment?.length} bình luận` : ``} */}
+                                    {post?.comments._id?.length}
                                 </div>
                                 <div className='flex '>
                                     {}
@@ -126,18 +146,27 @@ const Listpost = () => {
                             </div>
                         </div>
 
-                        <div className='flex justify-center items-center my-2 md:mx-3 text-gray-500'>
-                            <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100'>
-                                <button className='flex justify-center items-center gap-2'><BiLike />Thích</button>
+                        <div className='flex justify-center items-center my-2 md:mx-3 text-gray-500 font-bold'>
+                            <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100' >
+                                <button className={`flex justify-center items-center gap-2 ${likedPosts.includes(post._id) ? 'text-blue-500' : 'text-gray-500'}`} onClick={() => handleLikePost(post._id)}
+                                
+
+                                ><BiLike />Thích</button>
                             </div>
                             <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100'>
-                                <button className='flex justify-center items-center gap-2'><FaRegComment />Bình luận</button>
+                                <button className='flex justify-center items-center gap-2' onClick={() => handleShowComment(post._id)}><FaRegComment />Bình luận</button>
                             </div>
                             <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100'>
                                 <button className='flex justify-center items-center gap-2'><PiShareFat />Chia sẻ</button>
                             </div>
                         </div>
+                        {showComment[post._id] && (
+                            <div className="w-full top-full flex">
+                                <Comments postId={post._id} comments={post.comments} />
+                            </div>
+                        )} 
                     </div>
+                    
                 ))
             } 
           
