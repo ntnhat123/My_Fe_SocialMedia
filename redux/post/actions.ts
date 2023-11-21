@@ -1,5 +1,5 @@
 import { IPostPayload } from "@/interface/post";
-// import { getPost } from "@/api/post/post";
+import { getPost } from "@/api/post/post";
 import {createAction} from '@reduxjs/toolkit';
 
 export const getPostRequest = createAction('ACTION/GET_POST_REQUEST');
