@@ -40,15 +40,5 @@ const updatePosts = async (idPost: string, content: string, images: string[]) =>
     }
 }
 
-const likePost = async (idPost: string) => {
-    const data = { id: idPost };
-    const url = apiRouter.likePost;
-    try {
-        const res = await axiosClient.post<IPostPayload>(url, data);
-        return res.data;
-    } catch (error) {
-        throw error;
-    }
-}
 
-export { getPost, deletePosts,createPosts,updatePosts,likePost }
+export { getPost, deletePosts,createPosts,updatePosts }

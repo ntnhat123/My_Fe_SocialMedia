@@ -9,12 +9,9 @@ export const apiRouter = {
     createPost : '/post/createPost',
     getPost: '/post/getPost',
     getPostOfUser: '/post/getPostOfUserId',
-    likePost: '/post/likePost',
     deletePost: '/post/deletePost',
     updatePost: '/post/updatePost',
     // comment
-    getAllComment: '/comment/getAllComment',
-    createComment: '/comment/createComment',
-    deleteComment: '/comment/deleteComment',
+    getComment: '/comment/getAllComment',
     
 }

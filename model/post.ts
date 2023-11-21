@@ -6,7 +6,7 @@ export interface IPost {
     content: string;
     images: string[];
     likes: string[];
-    comments: IComment;
+    comments: IComment[];
     usercreator : IUser;
     createdAt: string;
     updatedAt: string;
