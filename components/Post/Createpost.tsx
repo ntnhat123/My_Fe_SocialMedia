@@ -73,7 +73,6 @@ export default function CreatePost({ profile,
           alert('Bạn chưa nhập gì');
         }
       } else{
-        // nếu là trang profile thì sẽ update post
         if (inputValue.length > 0) {
           const res = await updatePosts(user?._id as string,inputValue, inputImage)
           console.log(res.data)
