@@ -68,12 +68,15 @@ const Listpost = () => {
     const handleLikePost = async (idPost: string) => {
         try{
             const isAlreadyLiked = likedPosts.includes(idPost);
+            await likePost(idPost);
             if (isAlreadyLiked) {
-                await likePost(idPost);
-                setLikedPosts((prevLikedPosts) => prevLikedPosts.filter((postId) => postId !== idPost));
+                if(router.pathname === "/profile/[id]"){
+                    dispatch(getPostOfUserRequest({id: router.query.id as string}))
+                }else{
+                    dispatch(getPostRequest());
+                }
             } else {
-                await likePost(idPost);
-                setLikedPosts((prevLikedPosts) => [...prevLikedPosts, idPost]);
+                dispatch(getPostRequest());
             }
         }catch(error){
             console.log(error)
@@ -120,7 +123,7 @@ const Listpost = () => {
                             </div>               
                         </div>
                         <div className='flex mx-3'>
-                            <h1>{post?.content}</h1>
+                            <h1 className='text-xl'>{post?.content}</h1>
                         </div>
                         <div className="w-full flex flex-wrap">
                             {post.images?.map((image, index) => (
@@ -132,12 +135,11 @@ const Listpost = () => {
                         </div>
 
                         <div className="flex mx-3">
-                            <div className="flex-grow">
-                                {post?.likes?.length > 0 ? `${post?.likes?.length} lượt thích` : ``}
+                            <div className="flex-grow" >
+                                { post?.likes?.length > 0 ? `${post?.likes?.length} lượt thích` : ''}
                             </div>
                             <div className='flex w-full flex-1 items-end justify-end gap-2'>
                                 <div className='grow-0 flex'>
-                                    {/* {post?.comments?.comment?.length > 0 ? `${post?.comments?.comment?.length} bình luận` : ``} */}
                                     {post?.comments._id?.length}
                                 </div>
                                 <div className='flex '>
@@ -147,11 +149,8 @@ const Listpost = () => {
                         </div>
 
                         <div className='flex justify-center items-center my-2 md:mx-3 text-gray-500 font-bold'>
-                            <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100' >
-                                <button className={`flex justify-center items-center gap-2 ${likedPosts.includes(post._id) ? 'text-blue-500' : 'text-gray-500'}`} onClick={() => handleLikePost(post._id)}
-                                
-
-                                ><BiLike />Thích</button>
+                            <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100' onClick={() => handleLikePost(post._id)}>
+                                <button className={`flex justify-center items-center gap-2 ${likedPosts.includes(post?._id) ? 'text-blue-500' : ''}`} ><BiLike />Thích</button>
                             </div>
                             <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100'>
                                 <button className='flex justify-center items-center gap-2' onClick={() => handleShowComment(post._id)}><FaRegComment />Bình luận</button>

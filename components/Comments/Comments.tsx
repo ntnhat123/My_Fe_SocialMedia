@@ -39,13 +39,13 @@ const Comments = ({comments,postId}: ICommentsContainer) => {
                 comment?.map((comment,index) => (
                     <div key={index} className="flex w-full items-center justify-center gap-2 px-5">
                         <div className="w-10 h-10 rounded-full object-cover overflow-hidden">
-                            <img src="https://picsum.photos/200" alt="" className='overflow-hidden w-full object-cover rounded-full' />
+                            <img src={comment?.usercreator?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
                         </div>
                         <div className="flex w-full">
                             <div className="flex flex-col w-full">
                                 <div className="flex w-full items-center justify-between">
                                     <div className="flex flex-col">
-                                        <span className="font-bold text-lg">{comment?.usercreator?.fullName}</span>
+                                        <span className="font-bold text-lg">{comment?.comment.length}</span>
                                         <span className="text-sm text-gray-400">{comment?.usercreator?.createdAt}</span>
                                     </div>
                                     <div className="flex gap-2">
@@ -65,7 +65,7 @@ const Comments = ({comments,postId}: ICommentsContainer) => {
             <div className="flex w-full items-center justify-center gap-2 px-5">
                 <form action="" onSubmit={handleOnSubmit} className="flex w-full items-center justify-center gap-2 px-5">
                     <div className="w-10 h-10 rounded-full object-cover overflow-hidden">
-                        <img src="https://picsum.photos/200" alt="" className='overflow-hidden w-full object-cover rounded-full' />
+                        <img src={user?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' style={{ objectFit: 'cover', aspectRatio: '1 / 1' }}/>
                     </div>
                     <div className="flex w-full">
                         <input type="text" placeholder="Viết bình luận..." id="content" value={inputValue} onChange={handleOnChange} className="w-full outline-none bg-slate-200 rounded-full py-1 text-lg px-3" />
