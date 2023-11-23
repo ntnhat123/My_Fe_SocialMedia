@@ -13,7 +13,11 @@ import { deletePosts,likePost } from '@/api/post/post'
 import { MdOutlineClose } from 'react-icons/md'
 import CreatePost from '@/components/Post/Createpost'
 import Comments from '@/components/Comments/Comments'
+import CommentContainer from '../Comments/CommentContainer'
 
+// interface IPropsPost {
+//     postOfUser: IPost
+// }
 
 const Listpost = () => {
     const router = useRouter()
@@ -89,8 +93,8 @@ const Listpost = () => {
                 post?.map((post,index) => (
                     <div key={index} className='flex flex-col w-full h-full bg-white rounded-lg mb-1'>
                         <div className='flex justify-between mx-3'> 
-                            <div className='flex items-center my-2 gap-2'>
-                                <div className='w-10 h-10 rounded-full object-cover overflow-hidden'>
+                            <div className='flex items-center my-2 gap-2 cursor-pointer' onClick={() => router.push(`/profile/${post?.usercreator?._id}`)}>
+                                <div className='w-10 h-10 rounded-full object-cover overflow-hidden '  >
                                     <img src={post?.usercreator?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
                                 </div>
                                 <div className='flex flex-col items-start'>
@@ -140,7 +144,7 @@ const Listpost = () => {
                             </div>
                             <div className='flex w-full flex-1 items-end justify-end gap-2'>
                                 <div className='grow-0 flex'>
-                                    {post?.comments._id?.length}
+                                    {post?.comments?._id?.length}
                                 </div>
                                 <div className='flex '>
                                     {}
@@ -159,9 +163,11 @@ const Listpost = () => {
                                 <button className='flex justify-center items-center gap-2'><PiShareFat />Chia sẻ</button>
                             </div>
                         </div>
+                        
                         {showComment[post._id] && (
-                            <div className="w-full top-full flex">
-                                <Comments postId={post._id} comments={post.comments} />
+                            <div className="w-full top-full flex flex-col">
+                                <CommentContainer postId={post._id}  userId={post.usercreator._id} comment={post.comments} />                                
+                                <Comments postId={post._id} comments={post.comments} postOfcomment={post} />
                             </div>
                         )} 
                     </div>

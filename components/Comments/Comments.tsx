@@ -5,20 +5,26 @@ import { IoMdSend } from "react-icons/io";
 import { useAuth } from "@/context/authContext";
 import { createComment } from "@/api/comments/comments";
 import { useRouter } from "next/router";
+import { IPost } from "@/model/post";
+import { getPostRequest } from "@/redux/post/actions";
 
-interface ICommentsContainer {
+interface IComments {
     comments: IComment;
     postId: string;
+    postOfcomment: IPost;
 }
-const Comments = ({comments,postId}: ICommentsContainer) => {
+
+const Comments = ({ comments, postId, postOfcomment }: IComments) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { user } = useAuth();
-    const [comment, setComment] = React.useState<IComment[]>([]);
+    const [comment, setComment] = React.useState<IComment[]>([]); // Initialize comments state with initial comments
     const [commentId, setCommentId] = React.useState<string | null>(null);
+    const [postComment, setPostComment] = React.useState<IPost[]>([]); // You might want to initialize this state with initial posts
     const [modalVisible, setModalVisible] = React.useState(false);
     const [inputValue, setInputValue] = React.useState('');
-        
+    const [showComment, setShowComment] = React.useState<Record<string, boolean>>({});
+
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
     }
@@ -26,42 +32,17 @@ const Comments = ({comments,postId}: ICommentsContainer) => {
     const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await createComment(inputValue,user?._id as string,postId);
+            const newComment = await createComment(inputValue, user?._id as string, postId);
+            setComment([...comment, newComment.data]);
+            dispatch(getPostRequest());
             setInputValue('');
         } catch (err) {
             console.log(err)
         }
     }
-    
+
     return (
         <div className="relative w-full">
-            {
-                comment?.map((comment,index) => (
-                    <div key={index} className="flex w-full items-center justify-center gap-2 px-5">
-                        <div className="w-10 h-10 rounded-full object-cover overflow-hidden">
-                            <img src={comment?.usercreator?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' />
-                        </div>
-                        <div className="flex w-full">
-                            <div className="flex flex-col w-full">
-                                <div className="flex w-full items-center justify-between">
-                                    <div className="flex flex-col">
-                                        <span className="font-bold text-lg">{comment?.comment.length}</span>
-                                        <span className="text-sm text-gray-400">{comment?.usercreator?.createdAt}</span>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <button className="hover:bg-slate-200 rounded-full p-2"><IoMdSend /></button>
-                                        <button className="hover:bg-slate-200 rounded-full p-2"><IoMdSend /></button>
-                                    </div>
-                                </div>
-                                <div className="flex w-full">
-                                    <span className="text-lg">{comment?.content}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))
-            }
-            
             <div className="flex w-full items-center justify-center gap-2 px-5">
                 <form action="" onSubmit={handleOnSubmit} className="flex w-full items-center justify-center gap-2 px-5">
                     <div className="w-10 h-10 rounded-full object-cover overflow-hidden">
@@ -79,4 +60,4 @@ const Comments = ({comments,postId}: ICommentsContainer) => {
     )
 }
 
-export default Comments
+export default Comments;

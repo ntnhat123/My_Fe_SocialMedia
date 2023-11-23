@@ -10,4 +10,5 @@ export interface IComment {
     tag: string;
     commentID : string;
     postUserID : string;
+    createdAt: Date;
 }
