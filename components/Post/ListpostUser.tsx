@@ -11,7 +11,6 @@ import { getPostOfUserRequest,getPostOfUserFailure,getPostOfUserSuccess } from '
 import { postListUser } from '@/redux/post/selectors'
 import Listpost from './Listpost'
 
-
 const ListpostUser = () => {
     const { user } = useAuth()
     const router = useRouter()
@@ -23,10 +22,10 @@ const ListpostUser = () => {
             dispatch(getPostOfUserRequest({id: router.query.id as string}))
         }
     },[router.query.id, dispatch, user])
-    
+        
     return (
         <div className=''>
-            <Listpost />
+            <Listpost  />
         </div>
     )
 }

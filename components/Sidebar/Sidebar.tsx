@@ -5,8 +5,8 @@ import { getUserByIds } from '@/api/user/user'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/authContext'
 import { SidebarData } from '@/data/sidebar'
-
-
+import { FaRegUser } from "react-icons/fa";
+import { TbLogout } from "react-icons/tb";
 
 const Sidebar = () => {
   const router = useRouter()
@@ -82,11 +82,11 @@ const Sidebar = () => {
         </div>
         {isDropdownOpen && (
           <div className="absolute right-0 mt-10 bg-white rounded-lg shadow-md">
-            <button className="block w-full text-left px-4 py-2 hover:bg-gray-200" onClick={() => router.push(`/profile/${user?._id}`)}>
-              Trang cá nhân
+            <button className=" flex gap-2 justify-end items-center w-full text-left px-4 py-2 hover:bg-gray-200" onClick={() => router.push(`/profile/${user?._id}`)}>
+            Trang cá nhân<FaRegUser />
             </button>
-            <button className="block w-full text-left px-4 py-2 hover:bg-gray-200" onClick={handleLogout}>
-              Đăng xuất
+            <button className="flex gap-2 justify-end items-center w-full text-left px-4 py-2 hover:bg-gray-200" onClick={handleLogout}>
+              Đăng xuất<TbLogout />
             </button>
           </div>
         )}

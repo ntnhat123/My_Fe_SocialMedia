@@ -5,6 +5,8 @@ export const apiRouter = {
     loginByToken: '/auth/loginToken',
     getUserById: '/user/user',
     updateUser: '/user/updateUser',
+    follow: '/user/follow',
+    unfollow: '/user/unfollow',
     //post
     createPost : '/post/createPost',
     getPost: '/post/getPost',
