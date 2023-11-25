@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { BiLike } from 'react-icons/bi'
 import { FaEllipsisH, FaRegComment } from 'react-icons/fa'
 import { PiShareFat } from 'react-icons/pi'
@@ -14,6 +14,7 @@ import { MdOutlineClose } from 'react-icons/md'
 import CreatePost from '@/components/Post/Createpost'
 import Comments from '@/components/Comments/Comments'
 import CommentContainer from '../Comments/CommentContainer'
+import EditPost from './ModalEditPost'
 
 // interface IPropsPost {
 //     postOfUser: IPost
@@ -25,13 +26,21 @@ const Listpost = () => {
     const listpost = useSelector(postList)
     const listpostuser = useSelector(postListUser)
     const listposts = router.pathname === '/profile/[id]' ? listpostuser : listpost
-    const [post, setPost] = React.useState<IPost[]>([])
+    const [post, setPost] = React.useState<IPost[]>([] as IPost[])
     const dispatch = useDispatch()
     const [deletePostId, setDeletePostId] = React.useState<string | null>(null);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [updatePostId, setUpdatePostId] = React.useState<string | null>(null);
     const [showComment, setShowComment] = React.useState<Record<string, boolean>>({});
     const [likedPosts, setLikedPosts] = React.useState<string[]>([]);
+    const [showUpdatePost, setShowUpdatePost] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [postEdit, setEditPost] = useState<IPost | null>({} as IPost);
+    const [openmodelEditPost, setOpenmodelEditPost] = useState(false);
+    
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const handleShowComment = (postId: string) => {
         setShowComment((prevShowComments) => ({
@@ -87,6 +96,10 @@ const Listpost = () => {
         }
     }
 
+    const handleShowUpdatePost = () => {
+        setShowUpdatePost(!showUpdatePost)
+    }
+
     return (
         <div className='flex flex-col w-full h-full overflow-y-auto'>
             {
@@ -97,6 +110,7 @@ const Listpost = () => {
                                 <div className='w-10 h-10 rounded-full object-cover overflow-hidden '  >
                                     <img src={post?.usercreator?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
                                 </div>
+                                
                                 <div className='flex flex-col items-start'>
                                     <h1 className='font-bold text-xl'>{post?.usercreator?.fullName}</h1>
                                     <h1 className='text-gray-500 text-sm'>
@@ -111,7 +125,14 @@ const Listpost = () => {
                                 </div>
                             </div>
                             <div className='flex justify-center items-center'>
-                                <button className=' rounded-full hover:bg-slate-200 p-3' onClick={() => setUpdatePostId(post._id)}><FaEllipsisH /></button>
+                                <button className=' rounded-full hover:bg-slate-200 p-3' onClick={handleOpen}><FaEllipsisH /></button>
+                                {
+                                    open && (
+                                        <div className="fixed inset-0 flex items-center justify-center z-50 bg-slate-500/5" onClick={handleClose}>
+                                            <EditPost post={post} setPost={setPost} openmodelEditPost={openmodelEditPost} setOpenmodelEditPost={setOpenmodelEditPost} handleClose={handleClose} hanldeOpen={handleOpen} />
+                                        </div>
+                                    )
+                                }
                                 <button className=' rounded-full hover:bg-slate-200 p-3' onClick={()=> handleDeletePost(post._id)}><MdOutlineClose /></button>
                                 {deletePostId === post._id && (
                                      <div className='fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'>

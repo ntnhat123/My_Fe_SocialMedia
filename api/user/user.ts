@@ -21,21 +21,11 @@ export const updateUser = async (id: string, fullName:string, avatar: string,gen
     const res = await axiosClient.post<IInforUserPayload>(`${url}/${id}`,data);
     return res.data;
 }
-export const follow = async (id: string) => {
+export const follow = async (_id: string) => {
     const url = apiRouter.follow;
     const data = {
-        id
+        _id
     };
     const res = await axiosClient.post<IInforUserPayload>(url,data);
     return res.data;
 }
-
-export const unfollow = async (id: string) => {
-    const url = apiRouter.unfollow;
-    const data = {
-        id
-    };
-    const res = await axiosClient.post<IInforUserPayload>(url,data);
-    return res.data;
-}
-

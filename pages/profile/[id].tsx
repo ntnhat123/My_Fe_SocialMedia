@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { IUser } from '@/model/user'
-import { getUserByIds,follow,unfollow } from '@/api/user/user'
+import { getUserByIds,follow } from '@/api/user/user'
 import { useAuth } from '@/context/authContext'
 import Listpost from '@/components/Post/Listpost'
 import TransitionsModal from '@/components/Post/Createpost'
@@ -17,11 +17,6 @@ const Profile = () => {
     const [loading, setLoading] = React.useState<boolean>(false)
     const [openmodelEditUser, setOpenmodelEditUser] = React.useState<boolean>(false)    
     const [title, setTitle] = React.useState<string>('')
-
-
-
-    // const toggleModal = ()=> setOpenmodelEditUser(openmodelEditUser=> !openmodelEditUser);
-    // const handleOpen = () => setOpenmodelEditUser(true); 
     const handleClose = () => setOpenmodelEditUser(false);
     const dispatch = useDispatch()
 
@@ -36,22 +31,31 @@ const Profile = () => {
     }
 
     const handleFollow = async () => {
-        if(router.query.id === user?._id) {
-            setOpenmodelEditUser(true)
-        }else{
-            try{
-                if(profile.followers?.includes(user?._id as string)){
-                    const res = await unfollow(profile._id)
-                    setProfile(res.data)
-                }else{
-                    const res = await follow(profile._id)
-                    setProfile(res.data)
-                }                
-            }catch(err){    
-                console.log(err)
+        if (router.query.id === user?._id) {
+            setOpenmodelEditUser(true);
+        } else {
+            try {
+                // viết api follow ở đây khi ấn lần nữa unfollow
+                if (profile?.following?.includes(user?._id as string)) {
+                    await follow(profile?._id as string)
+                    setProfile({
+                        ...profile,
+                        following: profile?.following?.filter(item => item !== user?._id)
+                    })
+                }
+                else {
+                    await follow(profile?._id as string)
+                    setProfile({
+                        ...profile,
+                        following: [...profile?.following as string[], user?._id as string]
+                    })
+                }
+            } catch (err) {
+                console.error(err);
             }
         }
-    }
+    };
+    
 
     React.useEffect(() => {
         getProfile()
@@ -62,13 +66,13 @@ const Profile = () => {
         if(router.query.id === user?._id) {
             setTitle('Chỉnh sửa trang cá nhân')
         }else{
-            if(profile.followers?.includes(user?._id as string)){
+            if(profile?.following?.includes(user?._id as string)){
                 setTitle('Đang theo dõi')
             }else{
                 setTitle('Theo dõi')
             }
         }
-    },[router.query.id, dispatch, user,profile.followers])
+    },[router.query.id, dispatch, user,profile?.following])
     return (
         <div className=' w-full '> 
             <div className='xl:mx-52  bg-white  relative'>
@@ -79,16 +83,16 @@ const Profile = () => {
                     <div className=' flex justify-between w-full h-full mx-7'>
                         <div className='flex rounded-full '>
                             <div className='w-40 h-40 rounded-full md:scale-100 scale-90 overflow-hidden'>
-                                <img src={profile.avatar} alt="" className='overflow-hidden w-full h-full object-cover rounded-full' />
+                                <img src={profile?.avatar} alt="" className='overflow-hidden w-full h-full object-cover rounded-full' />
                             </div>
                             <div className='flex flex-col  justify-center items-start md:ml-7 '>
-                                <h1 className='font-bold text-2xl'>{profile.fullName}</h1>
+                                <h1 className='font-bold text-2xl'>{profile?.fullName}</h1>
                                 <div className="flex flex-col gap-2 md:flex-row ">
                                     <div className="flex items-center">
-                                        <span className="font-bold">{ profile.followers?.length}</span><span>đang theo dõi</span>
+                                        <span className="font-bold">{ profile?.followers?.length }</span><span>đang theo dõi</span>
                                     </div>
                                     <div className="flex items-center">
-                                        <span className="font-bold">{ profile.following?.length }</span><span>người theo dõi</span>
+                                        <span className="font-bold">{ profile?.following?.length }</span><span>người theo dõi</span>
                                     </div>
                                 </div>
                             </div>
