@@ -65,14 +65,6 @@ const Sidebar = () => {
             );
           })}
         </div>
-        {/* <div className="w-1/4  justify-end md:flex hidden">
-          <p className="p-2 group-hover:opacity-80 font-bold">{user?.fullName}</p>
-          <div className="flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full">
-            <Link href={`/profile/${user?._id}`}>
-              <img src={user?.avatar} alt="Profile" className="rounded-full group-hover:opacity-80 " style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
-            </Link>
-          </div>
-        </div> */}
         <div className="w-1/4 justify-end md:flex hidden relative">
         <div className="p-2 group-hover:opacity-80 font-bold" onClick={toggleDropdown}>
           {user?.fullName}
@@ -83,7 +75,7 @@ const Sidebar = () => {
         {isDropdownOpen && (
           <div className="absolute right-0 mt-10 bg-white rounded-lg shadow-md">
             <button className=" flex gap-2 justify-end items-center w-full text-left px-4 py-2 hover:bg-gray-200" onClick={() => router.push(`/profile/${user?._id}`)}>
-            Trang cá nhân<FaRegUser />
+              Trang cá nhân<FaRegUser />
             </button>
             <button className="flex gap-2 justify-end items-center w-full text-left px-4 py-2 hover:bg-gray-200" onClick={handleLogout}>
               Đăng xuất<TbLogout />

@@ -73,20 +73,20 @@ export default function CreatePost({ profile,
           alert('Bạn chưa nhập gì');
         }
       } else{
-        if (inputValue.length > 0) {
-          const res = await updatePosts(user?._id as string,inputValue, inputImage)
-          console.log(res.data)
-          if (res) {
-            dispatch(getPostRequest());
-            dispatch(getPostOfUserRequest({ id: user?._id as string }));
-            setInputValue('');
-            setInputImage(null);
-            handleClose();
-            setUpdatePost
-          }
-        } else {
-          alert('Bạn chưa nhập gì');
-        }
+        // if (inputValue.length > 0) {
+        //   const res = await updatePosts(user?._id as string,inputValue, inputImage)
+        //   console.log(res.data)
+        //   if (res) {
+        //     dispatch(getPostRequest());
+        //     dispatch(getPostOfUserRequest({ id: user?._id as string }));
+        //     setInputValue('');
+        //     setInputImage(null);
+        //     handleClose();
+        //     setUpdatePost
+        //   }
+        // } else {
+        //   alert('Bạn chưa nhập gì');
+        // }
       }
     }catch(error){
       console.log(error)
@@ -96,7 +96,7 @@ export default function CreatePost({ profile,
   return (
     <div className="text-center flex flex-col py-3 bg-white mb-1 rounded-lg">
       <div className='flex w-full justify-start items-center mx-3 gap-2 border-b-2 pb-3'>
-        <div className='w-12 h-10 rounded-full overflow-hidden'>
+        <div className='w-12 h-10 rounded-full overflow-hidden cursor-pointer' onClick={() => router.push(`/profile/${user?._id}`)}>
           <img src={user?.avatar} alt="" className='w-full h-full overflow-hidden object-cover rounded-full' style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
         </div>
         <div className='w-full mr-6'>

@@ -13,6 +13,18 @@ const createPosts = async (content:string,images:string[],usercreator:string) =>
         throw error;
     }
 }
+
+const updatePosts = async (idPost: string, content: string, images: string[]) => {
+    const data = { id: idPost, content, images };
+    const url = apiRouter.updatePost;
+    try {
+        const res = await axiosClient.post<IPostPayload>(url, data);
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const getPost = async () => {
     const url = apiRouter.getPost;
     return await axiosClient.get<IPostPayload>(url);
@@ -29,16 +41,6 @@ const deletePosts = async (idPost: string) => {
     }
 }
 
-const updatePosts = async (idPost: string, content: string, images: string[]) => {
-    const data = { id: idPost, content, images };
-    const url = apiRouter.updatePost;
-    try {
-        const res = await axiosClient.post<IPostPayload>(url, data);
-        return res.data;
-    } catch (error) {
-        throw error;
-    }
-}
 
 const likePost = async (idPost: string) => {
     const data = { id: idPost };
