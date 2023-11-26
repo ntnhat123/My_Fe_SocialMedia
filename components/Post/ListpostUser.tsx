@@ -7,7 +7,7 @@ import { useAuth } from '@/context/authContext'
 import { getPost } from '@/api/post/post'
 import { IPost } from '@/model/post'
 import { useDispatch, useSelector } from "react-redux"
-import { getPostOfUserRequest,getPostOfUserFailure,getPostOfUserSuccess } from '@/redux/post/actions'
+import { getPostOfUserRequest,getPostOfUserFailure,getPostOfUserSuccess,getPostSuccess } from '@/redux/post/actions'
 import { postListUser } from '@/redux/post/selectors'
 import Listpost from './Listpost'
 
@@ -20,6 +20,10 @@ const ListpostUser = () => {
     useEffect(() => {
         if(router.query.id) {
             dispatch(getPostOfUserRequest({id: router.query.id as string}))
+            getPost()
+            .then(res => {
+                dispatch(getPostSuccess(res.data))
+            })
         }
     },[router.query.id, dispatch, user])
         

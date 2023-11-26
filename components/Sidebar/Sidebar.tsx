@@ -7,18 +7,46 @@ import { useAuth } from '@/context/authContext'
 import { SidebarData } from '@/data/sidebar'
 import { FaRegUser } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
+import { searchUsers } from '@/api/user/user'
 
 const Sidebar = () => {
   const router = useRouter()
   const { user,logout } = useAuth()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [inputValue, setInputValue] = React.useState("");
+  const [debouncedValue, setDebouncedValue] = React.useState("");
+  const [listUser, setListUser] = React.useState<IUser[]>([]);
+  let timeoutId: NodeJS.Timeout;
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      setDebouncedValue(newValue);
+    }, 200);
+  };
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await searchUsers(debouncedValue, user?._id as string);
+        setListUser(listUser);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (debouncedValue) {
+      fetchData();
+    }
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [debouncedValue]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleLogout = () => {
-    // Add your logout logic here
     logout();
   };
   return (
@@ -36,6 +64,8 @@ const Sidebar = () => {
             <BiSearch className="absolute left-0 top-0 mt-2 ml-2 text-black/30" />
             <input
               type="text"
+              value={inputValue}
+              onChange={handleInputChange}
               placeholder="Search"
               className="rounded-3xl px-3 py-1 pl-8 outline-none bg-black/10"
             />

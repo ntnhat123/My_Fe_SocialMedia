@@ -41,6 +41,7 @@ const EditPost = ({ post, setPost, openmodelEditPost, setOpenmodelEditPost,handl
 
     try {
       const res = await updatePosts(post._id, inputValue.content, inputImage);
+      console.log(res)
       setPost(res.data);
       dispatch(getPostOfUserRequest({ id: user._id as string }));
       dispatch(getPostRequest());
@@ -101,7 +102,11 @@ const EditPost = ({ post, setPost, openmodelEditPost, setOpenmodelEditPost,handl
             <input
               type="text"
               id="content"
-              value={inputValue.content}
+              value={
+                inputValue.content.length > 0
+                  ? inputValue.content
+                  : post.content
+              }
               onChange={handleInputChange}
               className="w-full h-full px-4 outline-none text-2xl"
               placeholder="Bạn đang nghĩ gì ?"

@@ -29,3 +29,10 @@ export const follow = async (_id: string) => {
     const res = await axiosClient.post<IInforUserPayload>(url,data);
     return res.data;
 }
+
+export const searchUsers = async (fullName : string , id : string) => {
+    const res = await axiosClient.post<IInforUserPayload>(
+        `${apiRouter.searchUser}?fullName=${fullName}&id=${id}`
+    );
+    return res.data;
+}

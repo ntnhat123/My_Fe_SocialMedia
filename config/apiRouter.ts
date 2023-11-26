@@ -7,6 +7,7 @@ export const apiRouter = {
     updateUser: '/user/updateUser',
     follow: '/user/follow',
     unfollow: '/user/unfollow',
+    searchUser: '/user/searchUser',
     //post
     createPost : '/post/createPost',
     getPost: '/post/getPost',

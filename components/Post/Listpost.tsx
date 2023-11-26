@@ -39,7 +39,14 @@ const Listpost = () => {
     const [openmodelEditPost, setOpenmodelEditPost] = useState(false);
     
 
-    const handleOpen = () => setOpen(true);
+    const handleOpen = (id: string) => {
+        setOpen(true);
+        const post = listposts?.find((post) => post._id === id);
+        console.log(post)
+        setEditPost(
+            post as IPost
+        );
+    }
     const handleClose = () => setOpen(false);
 
     const handleShowComment = (postId: string) => {
@@ -49,12 +56,11 @@ const Listpost = () => {
         }));
     };
     useEffect(() => {
-        if (listposts) {
+        if (Array.isArray(listposts)) {
             const sortedPosts = [...listposts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
             setPost(sortedPosts);
         }
     }, [listposts]);
-    
 
     const handleDeletePost = (idPost: string) => {
         setDeletePostId(idPost);
@@ -125,11 +131,11 @@ const Listpost = () => {
                                 </div>
                             </div>
                             <div className='flex justify-center items-center'>
-                                <button className=' rounded-full hover:bg-slate-200 p-3' onClick={handleOpen}><FaEllipsisH /></button>
+                                <button className=' rounded-full hover:bg-slate-200 p-3' onClick={()=> handleOpen(post._id)}><FaEllipsisH /></button>
                                 {
                                     open && (
                                         <div className="fixed inset-0 flex items-center justify-center z-50 bg-slate-500/5" onClick={handleClose}>
-                                            <EditPost post={post} setPost={setPost} openmodelEditPost={openmodelEditPost} setOpenmodelEditPost={setOpenmodelEditPost} handleClose={handleClose} hanldeOpen={handleOpen} />
+                                            <EditPost post={post} setPost={setPost} openmodelEditPost={openmodelEditPost} setOpenmodelEditPost={setOpenmodelEditPost} handleClose={handleClose} hanldeOpen={()=>handleOpen(post._id)} />
                                         </div>
                                     )
                                 }
