@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import ListpostUser from '@/components/Post/ListpostUser'
 import { getPostOfUserRequest } from '@/redux/post/actions'
 import ModalEditUser from '@/components/EditProfile/ModalEditProflie'
+import { FaMapMarkerAlt } from 'react-icons/fa'
 
 const Profile = () => {
     const { user } = useAuth()
@@ -35,7 +36,6 @@ const Profile = () => {
             setOpenmodelEditUser(true);
         } else {
             try {
-                // viết api follow ở đây khi ấn lần nữa unfollow
                 if (profile?.following?.includes(user?._id as string)) {
                     await follow(profile?._id as string)
                     setProfile({
@@ -56,7 +56,6 @@ const Profile = () => {
         }
     };
     
-
     React.useEffect(() => {
         getProfile()
     }, [router.query.id ])
@@ -118,9 +117,14 @@ const Profile = () => {
             <div className='w-full bg-slate-200  mt-7'>
                 <div className='xl:mx-52 '>
                     <div className='flex flex-col md:flex-row w-full gap-3'>
-                                <div className="md:w-2/5  flex flex-col h-screen bg-white mt-3 rounded-lg">
-                                    <div className='flex'>
+                                <div className="md:w-2/5  flex flex-col h-full md:h-screen bg-white mt-3 rounded-lg">
+                                    <div className='flex flex-col mx-4 my-4'>
                                         <h1>Giới thiệu</h1>
+                                        <div className='flex items-center gap-2'>
+                                            <FaMapMarkerAlt />
+                                            <h1>Sống tại: <span className='font-bold'>{profile.address}</span></h1>
+
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="md:w-3/5 ">

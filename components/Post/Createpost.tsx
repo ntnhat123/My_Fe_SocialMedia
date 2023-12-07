@@ -72,22 +72,7 @@ export default function CreatePost({ profile,
         } else {
           alert('Bạn chưa nhập gì');
         }
-      } else{
-        // if (inputValue.length > 0) {
-        //   const res = await updatePosts(user?._id as string,inputValue, inputImage)
-        //   console.log(res.data)
-        //   if (res) {
-        //     dispatch(getPostRequest());
-        //     dispatch(getPostOfUserRequest({ id: user?._id as string }));
-        //     setInputValue('');
-        //     setInputImage(null);
-        //     handleClose();
-        //     setUpdatePost
-        //   }
-        // } else {
-        //   alert('Bạn chưa nhập gì');
-        // }
-      }
+      } 
     }catch(error){
       console.log(error)
     }
@@ -100,20 +85,30 @@ export default function CreatePost({ profile,
           <img src={user?.avatar} alt="" className='w-full h-full overflow-hidden object-cover rounded-full' style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
         </div>
         <div className='w-full mr-6'>
-          <input type="text" placeholder='Bạn đang nghĩ gì?' className='w-full outline-none bg-slate-200 rounded-full py-1 text-lg px-3 ' onClick={handleOpen} />
+          <input type="text" placeholder='Bạn đang nghĩ gì?' className='w-full outline-none bg-slate-200 rounded-full py-1 text-sm px-3' onClick={handleOpen} />
         </div>
       </div>
       <div className='flex mx-3'>
         <div className='flex flex-1 justify-center items-center hover:bg-slate-200 hover:rounded-lg'>
-          <button className=' rounded-full text-red-600 p-2'><MdVideocam size={30} /></button> <span className='text-slate-500'>Video trực tiếp</span>
+          <button className='rounded-full text-red-600 p-2'>
+            <MdVideocam size={20} /> 
+          </button>
+          <span className='text-xs text-slate-500'>Video trực tiếp</span>
         </div>
         <div className='flex flex-1 justify-center items-center hover:bg-slate-200 hover:rounded-lg'>
-          <button className=' rounded-full text-lime-600 p-2'><IoMdImages size={30} /></button><span className='text-slate-500'>Ảnh/video</span>
+          <button className='rounded-full text-lime-600 p-2'>
+            <IoMdImages size={20} /> 
+          </button>
+          <span className='text-xs text-slate-500'>Ảnh/video</span>
         </div>
         <div className='flex flex-1 justify-center items-center hover:bg-slate-200 hover:rounded-lg'>
-          <button className=' rounded-full text-blue-600 p-2'><PiFlagFill size={30} /></button><span className='text-slate-500'>Sự kiện trong đời</span>
+          <button className='rounded-full text-blue-600 p-2'>
+            <PiFlagFill size={20} />
+          </button>
+          <span className='text-xs text-slate-500'>Sự kiện trong đời</span>
         </div>
       </div>
+
       {open && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-slate-500/20" onClick={handleClose}>
           <div className="absolute bg-white rounded shadow-lg w-[500px]"  onClick={(e) => e.stopPropagation()}>

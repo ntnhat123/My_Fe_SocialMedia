@@ -6,8 +6,8 @@ import Skeleton from 'react-loading-skeleton'; // Import the Skeleton component
 import Loading from '@/components/Loading';
 import Link from 'next/link';
 import { useAuth } from '@/context/authContext';
-
-
+import { MdOutlineEmail } from "react-icons/md";
+import { CiLock } from "react-icons/ci";
 
 const Login = () => {
     const router = useRouter();
@@ -23,12 +23,11 @@ const Login = () => {
       e.preventDefault();
       setIsSubmit(true);
       login(email, password);
-      
     }
     
   return (
     <>
-      <div className="flex flex-col-reverse lg:flex-row  md:px-28 md:py-8 bg-gradient-to-r from-blue-500 to-green-500 w-full h-screen">
+      {/* <div className="flex flex-col-reverse lg:flex-row  md:px-28 md:py-8 bg-gradient-to-r from-blue-500 to-blue-500 w-full h-screen">
         <div className="flex flex-1 bg-white w-full h-full p-10  md:rounded-lg">
           <div className="w-full hidden lg:flex lg:flex-1 lg:w-1/2 ">
             <img
@@ -60,8 +59,6 @@ const Login = () => {
                     type="email"
                     placeholder="Email"
                     onChange={(e) => setEmail(e.target.value)}
-                    // isValidate={isSubmit && !isValidateEmail(email)}
-                    // isShowTextError={isSubmit && !isValidateEmail(email)}
                     textError="Email is not valid"
                   />
                 
@@ -92,9 +89,6 @@ const Login = () => {
               >
                 Login
               </button>
-              {/* {
-                error && <p className="text-red-500 text-sm mt-2">{error}</p>
-              } */}
               <div className='flex justify-end py-3 text-sm text-blue-500'>
                 <Link href='/forgot-password'>
                   Forgot password?
@@ -113,8 +107,45 @@ const Login = () => {
                 <span>Login with Google</span>
               </button>
             </div>
-            
-            {/* {loading && <Loading />} */}
+          </div>
+        </div>
+      </div> */}
+      <div className="flex flex-col lg:flex-row lg:p-16 p-3 items-center justify-center h-screen ">
+        <div className="lg:w-1/2 h-full lg:flex hidden items-center rounded-bl-xl rounded-tl-xl  overflow-hidden">
+          <img src="/images/undraw_Social_influencer_re_beim.png" alt="Social Influencer" className="w-full h-full object-cover" />
+        </div>
+        <div className="lg:w-1/2 h-full bg-gray-100 lg:p-28 p-12 py-40 w-full rounded-br-xl rounded-tr-xl overflow-hidden">
+          <form onSubmit={handleSubmit} className="flex flex-col space-y-6 text-center">
+            <h1 className="font-extrabold text-4xl bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-yellow-500 animate-gradient">Login Account</h1>
+            <div className="flex items-center border-b-2 border-blue-500 mb-4">
+              <span className="mr-2">
+                <MdOutlineEmail />
+              </span>
+              <input type="email" onChange={(e) => setEmail(e.target.value)} id="username" name="username" placeholder='Email' className="p-2 border-none focus:outline-none w-full bg-transparent" />
+            </div>
+
+            <div className="flex items-center border-b-2 border-blue-500 mb-4">
+              <span className="mr-2">
+                <CiLock  />
+              </span>
+              <input type="password" onChange={(e) => setPassword(e.target.value)} id="password" name="password" placeholder='Password' className="p-2 bg-transparent border-none focus:outline-none w-full" />
+            </div>
+
+            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded cursor-pointer">Login</button>
+          </form>
+          <div>
+            <p className="text-center mt-4">Don't have an account? <a className="text-blue-500 cursor-pointer" onClick={() => router.push('/register')} >Register</a></p>
+          </div>
+          <div className="flex items-center mt-4">
+            <div className="flex-1 border-b-2 border-gray-300"></div>
+            <div className="px-3 text-gray-500">Or</div>
+            <div className="flex-1 border-b-2 border-gray-300"></div>
+          </div>
+          <div className="flex justify-center items-center mt-5 w-full">
+            <button className="flex items-center justify-center px-5 py-2 w-full border-2">
+              <img src="/images/google.svg" className="w-5 h-5 mr-2" />
+              <span>Login with Google</span>
+            </button>
           </div>
         </div>
       </div>

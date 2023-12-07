@@ -43,7 +43,7 @@ const Comments = ({ comments, postId, postOfcomment }: IComments) => {
 
     return (
         <div className="relative w-full">
-            <div className="flex w-full items-center justify-center gap-2 px-5">
+            <div className="flex w-full items-center justify-center gap-2 px-2">
                 <form action="" onSubmit={handleOnSubmit} className="flex w-full items-center justify-center gap-2 px-5">
                     <div className="w-10 h-10 rounded-full object-cover overflow-hidden">
                         <img src={user?.avatar} alt="" className='overflow-hidden w-full object-cover rounded-full' style={{ objectFit: 'cover', aspectRatio: '1 / 1' }}/>

@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { IPost } from '@/model/post';
 
 interface IEditPost {
-  post: IPost;
+  postEdit: IPost ;
   setPost: React.Dispatch<React.SetStateAction<IPost[]>>;
   openmodelEditPost: boolean;
   setOpenmodelEditPost: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,28 +19,27 @@ interface IEditPost {
   handleClose : () => void;
 }
 
-const EditPost = ({ post, setPost, openmodelEditPost, setOpenmodelEditPost,handleClose,hanldeOpen }: IEditPost) => {
+const EditPost = ({ postEdit, setPost, openmodelEditPost, setOpenmodelEditPost,handleClose,hanldeOpen }: IEditPost) => {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
   const [showButtonBackground, setShowButtonBackground] = useState(false);
   const dispatch = useDispatch();
-  const [inputImage, setInputImage] = useState<any>(post.images);
+  const [inputImage, setInputImage] = useState<any>(postEdit.images);
   const [inputValue, setInputValue] = useState({
-    content: post.content,
+    content: postEdit.content,
     images: inputImage,
   });
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (user?._id !== post.usercreator._id) {
+    if (user?._id !== postEdit.usercreator._id) {
       alert('Bạn không có quyền chỉnh sửa bài viết này');
       return;
     }
 
     try {
-      const res = await updatePosts(post._id, inputValue.content, inputImage);
+      const res = await updatePosts(postEdit._id, inputValue.content, inputImage);
       console.log(res)
       setPost(res.data);
       dispatch(getPostOfUserRequest({ id: user._id as string }));
@@ -87,26 +86,14 @@ const EditPost = ({ post, setPost, openmodelEditPost, setOpenmodelEditPost,handl
         <form onSubmit={handleSubmit} className="w-full">
           <div className="flex justify-start items-center mx-4 gap-2 my-2 ">
             <div className="w-10 h-10 overflow-hidden rounded-full  bg-slate-500">
-              <img
-                src={user?.avatar}
-                alt=""
-                className="overflow-hidden w-full object-cover rounded-full"
-                style={{ objectFit: 'cover', aspectRatio: '1 / 1' }}
-              />
+              <img src={user?.avatar} alt="" className="overflow-hidden w-full object-cover rounded-full" style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
             </div>
             <div className="font-bold">
               <h1>{user?.fullName}</h1>
             </div>
           </div>
           <div className="w-full mb-14">
-            <input
-              type="text"
-              id="content"
-              value={
-                inputValue.content.length > 0
-                  ? inputValue.content
-                  : post.content
-              }
+            <input type="text" id="content" value={ inputValue.content }
               onChange={handleInputChange}
               className="w-full h-full px-4 outline-none text-2xl"
               placeholder="Bạn đang nghĩ gì ?"
