@@ -30,25 +30,21 @@ const Listpost = () => {
     const dispatch = useDispatch()
     const [deletePostId, setDeletePostId] = React.useState<string | null>(null);
     const [modalVisible, setModalVisible] = React.useState(false);
-    const [updatePostId, setUpdatePostId] = React.useState<string | null>(null);
     const [showComment, setShowComment] = React.useState<Record<string, boolean>>({});
     const [likedPosts, setLikedPosts] = React.useState<string[]>([]);
     const [showUpdatePost, setShowUpdatePost] = React.useState(false);
     const [open, setOpen] = useState(false);
-    const [postEdit, setEditPost] = useState<IPost | null>({} as IPost);
+    const [postEdit, setEditPost] = useState<IPost>({} as IPost);
     const [openmodelEditPost, setOpenmodelEditPost] = useState(false);
     
-
     const handleOpen = (id: string) => {
         setOpen(true);
         const post = listposts?.find((post) => post._id === id);
-        console.log(post)
         setEditPost(
             post as IPost
         );
     }
     const handleClose = () => setOpen(false);
-
     const handleShowComment = (postId: string) => {
         setShowComment((prevShowComments) => ({
           ...prevShowComments,
@@ -135,7 +131,7 @@ const Listpost = () => {
                                 {
                                     open && (
                                         <div className="fixed inset-0 flex items-center justify-center z-50 bg-slate-500/5" onClick={handleClose}>
-                                            <EditPost post={post} setPost={setPost} openmodelEditPost={openmodelEditPost} setOpenmodelEditPost={setOpenmodelEditPost} handleClose={handleClose} hanldeOpen={()=>handleOpen(post._id)} />
+                                            <EditPost postEdit={postEdit} setPost={setPost} openmodelEditPost={openmodelEditPost} setOpenmodelEditPost={setOpenmodelEditPost} handleClose={handleClose} hanldeOpen={()=>handleOpen(post._id)} />
                                         </div>
                                     )
                                 }

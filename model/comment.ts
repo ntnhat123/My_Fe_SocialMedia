@@ -7,6 +7,7 @@ export interface IComment {
     postID: string;
     likes: string[];
     comment: string[];
+    reply: string[];
     tag: string;
     commentID : string;
     postUserID : string;

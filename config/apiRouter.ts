@@ -19,5 +19,6 @@ export const apiRouter = {
     getAllComment: '/comment/getAllComment',
     createComment: '/comment/createComment',
     deleteComment: '/comment/deleteComment',
+    replyComment: '/comment/replyComment',
     
 }

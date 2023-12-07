@@ -27,17 +27,19 @@ const Homecontainers = () => {
   return <>
       <div className='h-full w-full md:py-3 md:px-5 bg-gray-200 overflow-y-auto no-scrollbar scrollbar-hidden'>
         <Sidebar/>
-        <div className='flex mt-5'>
-          <div className='flex flex-1 w-full px-8 '>
+        <div className='flex flex-col lg:flex-row mt-5'>
+          <div className='hidden md:flex flex-1 lg:w-1/3 w-full px-8 '>
             {/* <ProfileLeft/> */}
           </div>
-          <div className='flex flex-1 w-full overflow-y-auto no-scrollbar scrollbar-hidden'>
+          <div className='flex flex-2 lg:w-1/3 w-full lg:overflow-y-auto lg:no-scrollbar lg:scrollbar-hidden'>
             <Content  />
           </div>
-          <div className='flex flex-1 flex-col  px-5'>
-              {/* <RightFriend /> */}
+          <div className='hidden md:flex flex-1 lg:w-1/3 w-full lg:flex-col px-5'>
+            {/* <RightFriend /> */}
           </div>
         </div>
+
+
       </div>
   </>
 }
