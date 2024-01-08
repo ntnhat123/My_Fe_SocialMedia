@@ -29,7 +29,7 @@ const Homecontainers = () => {
         <Sidebar/>
         <div className='flex flex-col lg:flex-row mt-5'>
           <div className='hidden md:flex flex-1 lg:w-1/3 w-full px-8 '>
-            {/* <ProfileLeft/> */}
+            <ProfileLeft/>
           </div>
           <div className='flex flex-2 lg:w-1/3 w-full lg:overflow-y-auto lg:no-scrollbar lg:scrollbar-hidden'>
             <Content  />

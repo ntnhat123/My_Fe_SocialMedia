@@ -7,7 +7,9 @@ import { getRegisterByEmail } from '@/api/auth/register'
 import { loginbyToken } from '@/api/auth/loginBytoken'
 import { getUserByIds, updateUser } from '@/api/user/user'
 import { getLogout } from '@/api/auth/logout'
-
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 interface IAuthContext {
     login: (email:string, password:string) => void
@@ -65,18 +67,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               setUser(res.data.data);
               setTokenLocalStorage(res.data.token);
               setToken(res.data.token);
+              toast.success("Đăng nhập thành công");
               router.push("/");
               setLoading(true);
             } else {
-                setError(res.data.message);
+              toast.error(res.data.message);
               setLoading(false);
             }
           } else {
-            setError(res.data.message);
+            toast.error("Đăng nhập thất bại")
             setLoading(false);
           }
         } catch (error) {
-            console.log(error);
+            toast.error("Đăng nhập thất bại")
             setLoading(false);
         }
     };
@@ -89,14 +92,17 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                     setUser(res.data.data)
                     setTokenLocalStorage(res.data.token)
                     setToken(res.data.token)
+                    toast.success("Đăng ký thành công")
                     router.push('/login')
                     setLoading(true)
                 }else{
                     setError(res.data.message)
+                    toast.error('Đăng ký thất bại')
                     setLoading(false)
                 }
             }else{
                 setError(res.data.message)
+                toast.error('Đăng ký thất bại')
                 setLoading(false)
             }
         }   catch(error){
@@ -119,13 +125,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             console.log(res)
             if(res){
                     setUser(res.data)
+                    toast.success('Cập nhật thành công')
                     setLoading(true)
             }else{
                     setError(res)
+                    toast.error('Cập nhật thất bại')
                     setLoading(false)
             }
         } catch(error){
-            console.log(error)
+            toast.error('Cập nhật thất bại')
             setLoading(false)
         }
     }
@@ -178,7 +186,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
 
     const logout = async () => {
-        // vieets code logout
         try {
             const res = await getLogout();
             console.log(res)
@@ -239,6 +246,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return (
         <AuthContext.Provider value={authContextValue}>
             {children}
+            <ToastContainer />
         </AuthContext.Provider>
     )
 }

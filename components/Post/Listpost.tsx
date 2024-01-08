@@ -177,7 +177,9 @@ const Listpost = () => {
 
                         <div className='flex justify-center items-center my-2 md:mx-3 text-gray-500 font-bold'>
                             <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100' onClick={() => handleLikePost(post._id)}>
-                                <button className={`flex justify-center items-center gap-2 ${likedPosts.includes(post?._id) ? 'text-blue-500' : ''}`} ><BiLike />Thích</button>
+                                <button className={`flex justify-center items-center gap-2 ${
+                                    post.likes?.find((like) => like === user?._id) ? 'text-blue-500' : ''
+                                }`} ><BiLike />Thích</button>
                             </div>
                             <div className='flex flex-1 justify-center w-full py-1 hover:bg-slate-100'>
                                 <button className='flex justify-center items-center gap-2' onClick={() => handleShowComment(post._id)}><FaRegComment />Bình luận</button>

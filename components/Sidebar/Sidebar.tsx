@@ -100,7 +100,7 @@ const Sidebar = () => {
                 key={index}
                 className="flex w-full items-center justify-center"
               >
-                <button className="flex items-center justify-center rounded-lg hover:bg-gray-200 w-full py-3">
+                <button className="flex items-center justify-center rounded-lg hover:bg-gray-200 w-full py-3" onClick={() => router.push(item.link)} >
                   {item.icon}
                 </button>
                 <span className="hidden group-hover:block">{item.title}</span>
@@ -109,7 +109,7 @@ const Sidebar = () => {
           })}
         </div>
         <div className="w-1/4 justify-end md:flex hidden relative cursor-pointer">
-          <div className="p-2 group-hover:opacity-80 font-bold " onClick={toggleDropdown}>
+            <div className="p-2 group-hover:opacity-80 font-bold " onClick={toggleDropdown}>
               {user?.fullName}
             </div>
             <div className="flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full" onClick={toggleDropdown}>
@@ -125,7 +125,7 @@ const Sidebar = () => {
                 </button>
               </div>
             )}
-          </div>
+        </div>
       
       </div>
     </>

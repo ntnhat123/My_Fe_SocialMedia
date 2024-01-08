@@ -1,6 +1,7 @@
 export const configURL = {
-    baseURL : 'http://localhost:5001/',
-
+    // baseURL: 'http://192.168.1.82:5001/',
+    // baseURL: 'http://localhost:5001/',
+    baseURL: 'https://besocialmedia.onrender.com/',
 }
 
 

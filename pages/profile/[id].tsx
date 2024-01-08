@@ -10,6 +10,7 @@ import ListpostUser from '@/components/Post/ListpostUser'
 import { getPostOfUserRequest } from '@/redux/post/actions'
 import ModalEditUser from '@/components/EditProfile/ModalEditProflie'
 import { FaMapMarkerAlt } from 'react-icons/fa'
+import Sidebar from '@/components/Sidebar/Sidebar'
 
 const Profile = () => {
     const { user } = useAuth()
@@ -74,6 +75,7 @@ const Profile = () => {
     },[router.query.id, dispatch, user,profile?.following])
     return (
         <div className=' w-full '> 
+            <Sidebar />
             <div className='xl:mx-52  bg-white  relative'>
                 <div className='bg-gradient-to-t from-purple-400 via-pink-500 to-red-500 h-64 w-full rounded-b-3xl'>
 
@@ -123,8 +125,12 @@ const Profile = () => {
                                         <div className='flex items-center gap-2'>
                                             <FaMapMarkerAlt />
                                             <h1>Sống tại: <span className='font-bold'>{profile.address}</span></h1>
-
                                         </div>
+                                        {
+                                            profile && profile.story && (
+                                                <h1>Tiểu sử: <span className='font-bold'>{profile.story}</span></h1>
+                                            )
+                                        }
                                     </div>
                                 </div>
                                 <div className="md:w-3/5 ">

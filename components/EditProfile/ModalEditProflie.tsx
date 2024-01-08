@@ -27,7 +27,7 @@ export default function ModalEditProfile({
     avatar: inputImage,
     fullName: profile.fullName,
     address: profile.address,
-    story: "",
+    story: profile.story,
     mobile: "",
     gender: profile.gender,
   });

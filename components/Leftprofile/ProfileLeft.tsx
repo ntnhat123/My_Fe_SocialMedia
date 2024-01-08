@@ -1,56 +1,64 @@
 import React from 'react'
-import { FaUserCog } from 'react-icons/fa'
+import { BsBookmarkFill } from 'react-icons/bs';
+import { FaFacebookMessenger, FaGamepad, FaUserCog, FaUserFriends } from 'react-icons/fa'
+import { FaClockRotateLeft } from "react-icons/fa6";
+import { HiUserGroup } from "react-icons/hi2";
+import { IoMdFlag } from 'react-icons/io';
+import { FcEditImage } from "react-icons/fc";
+import { TbDeviceTabletDown } from 'react-icons/tb';
+import { useAuth } from '@/context/authContext'
+import { useRouter } from 'next/router'
 type Props = {}
 
 const ProfileLeft = (props: Props) => {
+  const { user } = useAuth()
+  const router = useRouter()
   return <>
-    <div className='flex flex-col w-full h-full '>
-
-        <div className="bg-white rounded-lg overflow-hidden shadow-md">
-            
-            <div>
-                <img src="https://scontent.fdad1-4.fna.fbcdn.net/v/t39.30808-6/361606265_3446022385728396_458335017174884602_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=mNTeqb676rQAX-L0o-q&_nc_ht=scontent.fdad1-4.fna&oh=00_AfA27Ib7d1Lbqj-k75F7ZekKrnwN3ApZjCTfT5EJuMDGTw&oe=651E4190"
-                alt="Cover"
-                className="w-full h-32 object-cover object-center"
-                />
-            </div>
-
-            <div className="flex items-center justify-between space-x-4 p-4 px-10 mt-[-1.5rem]">
-                <div className="flex ">
-                    <div className='bg-white rounded-full '>
-                    <img src="https://scontent.fdad1-4.fna.fbcdn.net/v/t39.30808-6/361606265_3446022385728396_458335017174884602_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=mNTeqb676rQAX-L0o-q&_nc_ht=scontent.fdad1-4.fna&oh=00_AfA27Ib7d1Lbqj-k75F7ZekKrnwN3ApZjCTfT5EJuMDGTw&oe=651E4190"
-
-                        alt="Profile"
-                        className="w-16 h-16 p-1 rounded-full"
-                        />
-                    </div>
-                    <div className='my-2'>
-                        <p className="text-xl font-bold">Nguyễn Thanh Nhật</p>
-                        <p className="text-gray-600">ntn_1006</p>
-                    </div>
-                </div>
-                <div>
-                    <FaUserCog className='text-2xl'/>
-                </div>
-            </div>
-            <div className='bg-slate-200 flex items-center justify-between px-10'>
-                <div className='flex flex-col justify-center items-center'>
-                    <h1 className='font-medium'>12K</h1>
-                    <p>Followers</p>
-                </div>
-                <div className='flex flex-col justify-center items-center'>
-                    <h1 className='font-medium'>12K</h1>
-                    <p>Followers</p>
-                </div>
-                <div className='flex flex-col justify-center items-center'>
-                    <h1 className='font-medium'>12K</h1>
-                    <p>Followers</p>
-                </div>
-            </div>
+    <div className='flex flex-col w-full h-full gap-y-3 cursor-pointer'>
+        <div className='w-full flex justify-start items-center gap-2 py-2 hover:bg-gray-300 hover:rounded-lg' onClick={() => router.push(`/profile/${user?._id}`)}>
+          <div className='flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full'>
+            <img src={user?.avatar} alt="Profile" className="rounded-full group-hover:opacity-80" style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />
+          </div>
+          <div className='font-bold'>
+            <h1>{user?.fullName}</h1>
+          </div>
         </div>
-
-
-
+        <div className='w-full py-2 flex items-center gap-2 hover:bg-gray-300 hover:rounded-lg'>
+          <FaUserFriends style={{ color: 'green' }} />
+          Bạn bè
+        </div>
+        <div className='w-full py-2 flex items-center gap-2 hover:bg-gray-300 hover:rounded-lg'>
+          <FaClockRotateLeft style={{ color: 'blue' }} />
+          Kỷ niệm
+        </div>
+        <div className='w-full py-2 flex items-center gap-2 hover:bg-gray-300 hover:rounded-lg'>
+          <FaFacebookMessenger style={{ color: 'purple' }} />
+          Messenger
+        </div>
+        <div className='w-full py-2 flex items-center gap-2 hover:bg-gray-300 hover:rounded-lg'>
+          <BsBookmarkFill style={{ color: 'red' }} />
+          Đã lưu
+        </div>
+        <div className='w-full py-2 flex items-center gap-2 hover:bg-gray-300 hover:rounded-lg'>
+          <HiUserGroup style={{ color: 'orange' }} />
+          Nhóm
+        </div>
+        <div className='w-full py-2 flex items-center gap-2 hover:bg-gray-300 hover:rounded-lg'>
+          <TbDeviceTabletDown style={{ color: 'pink' }} />
+          Bảng feed
+        </div>
+        <div className='w-full py-2 flex items-center gap-2 hover:bg-gray-300 hover:rounded-lg'>
+          <IoMdFlag style={{ color: 'brown' }} />
+          Trang
+        </div>
+        <div className='w-full py-2 flex items-center gap-2 hover:bg-gray-300 hover:rounded-lg'>
+          <FaGamepad style={{ color: 'teal' }} />
+          Trò chơi
+        </div>
+        <div className='w-full py-2 flex items-center gap-2 hover:bg-gray-300 hover:rounded-lg'>
+          <FcEditImage style={{ color: 'cyan' }} />
+          Hoạt động quảng cáo gần đây
+        </div>
     </div>
   </>
 }
