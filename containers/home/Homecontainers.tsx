@@ -8,8 +8,14 @@ import { useAuth } from '@/context/authContext'
 import Link from 'next/link'
 import { useDispatch, useSelector } from "react-redux"
 import { getPostRequest } from '@/redux/post/actions'
+import { profile } from 'console'
 
-const Homecontainers = () => {
+interface IProfile {
+  profile: any
+}
+const Homecontainers = (
+  {profile}: IProfile
+) => {
   const router = useRouter()
   const { user } = useAuth()
   const dispatch = useDispatch()
@@ -32,7 +38,7 @@ const Homecontainers = () => {
             <ProfileLeft/>
           </div>
           <div className='flex flex-2 lg:w-1/3 w-full lg:overflow-y-auto lg:no-scrollbar lg:scrollbar-hidden'>
-            <Content  />
+            <Content profile={profile} />
           </div>
           <div className='hidden md:flex flex-1 lg:w-1/3 w-full lg:flex-col px-5'>
             {/* <RightFriend /> */}
