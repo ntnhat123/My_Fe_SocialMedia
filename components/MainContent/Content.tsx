@@ -8,12 +8,16 @@ import { BiVideo } from 'react-icons/bi'
 import Listpost from '../Post/Listpost'
 import { IUser } from '@/model/user'
 import TransitionsModal from '../Post/Createpost'
+import { profile } from 'console'
 
-const Content = () => {
+interface Props {
+  profile: IUser
+}
+const Content = ({profile}: Props) => {
   return <>
     <div className='flex flex-col w-full h-full overflow-y-auto scrollbar-hidden' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         <div className="flex flex-col ">
-            <TransitionsModal />
+            <TransitionsModal profile={profile}  />
             <Listpost />
             
         </div>
