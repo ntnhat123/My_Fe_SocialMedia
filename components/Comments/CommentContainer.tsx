@@ -7,7 +7,7 @@ import ReplyComment from './ReplyComment';
 interface ICommentsContainer {
     postId: string;
     userId: string;
-    comment: IComment[];
+    comment: IComment;
 }
 
 const CommentContainer = ({postId,userId,comment}: ICommentsContainer) => {
@@ -18,7 +18,7 @@ const CommentContainer = ({postId,userId,comment}: ICommentsContainer) => {
 
     return (
         <div> 
-            {comment && comment.map((singleComment, index) => (
+            {comment&& Array.isArray(comment) && comment.map((singleComment, index) => (
                 <div key={index} className="flex w-full flex-col">
                     <div className='flex items-center justify-center gap-2 px-5'>
                         <div className='w-10 h-10 rounded-full object-cover overflow-hidden '  >
