@@ -17,11 +17,7 @@ interface IProps {
   setUpdatePost?: React.Dispatch<React.SetStateAction<IPost>>;
 }
 
-export default function CreatePost({ profile, 
-  updatePost,
-  setUpdatePost
-}: IProps) {
-  // console.log(profile)
+export default function CreatePost() {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
