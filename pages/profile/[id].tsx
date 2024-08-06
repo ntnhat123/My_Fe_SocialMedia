@@ -103,7 +103,7 @@ const Profile = () => {
                             {
                                 openmodelEditUser && (
                                     <div className="fixed inset-0 flex items-center justify-center z-50 bg-slate-500/20" onClick={handleClose} >
-                                        <div className="absolute bg-white rounded shadow-lg md:w-2/4"  onClick={(e) => e.stopPropagation()}>
+                                        <div className="absolute bg-white rounded shadow-lg md:w-2/4" onClick={(e) => e.stopPropagation()}>
                                             <ModalEditUser profile={profile} setProfile={setProfile}
                                                 setOpenmodelEditUser={setOpenmodelEditUser}
                                                 openmodelEditUser={openmodelEditUser}

@@ -19,7 +19,6 @@ const Content = ({profile}: Props) => {
         <div className="flex flex-col ">
             <TransitionsModal profile={profile}  />
             <Listpost />
-            
         </div>
         
     </div>

@@ -22,3 +22,13 @@ export const postLoadingUser = createSelector(
     selectPost,
     (post) => post.loading,
 )
+
+export const choosePost = createSelector(
+    selectPost,
+    (post) => post.choosePost,
+)
+
+export const postState= createSelector(
+    selectPost,
+    (post) => post,
+);

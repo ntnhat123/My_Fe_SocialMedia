@@ -10,7 +10,8 @@ import { useDispatch,useSelector } from 'react-redux';
 import { getPostOfUserRequest,getPostRequest } from '@/redux/post/actions';
 import { useRouter } from 'next/router';
 import { IPost } from '@/model/post';
-
+import { useSocket } from '@/context/socketContext';
+import { url } from 'inspector';
 interface IProps {
   profile: IUser;
   updatePost?: boolean;
@@ -25,6 +26,7 @@ export default function CreatePost({ profile }: IProps) {
   const [showButtonBackground, setShowButtonBackground] = useState(false);
   const dispatch = useDispatch();
   const [inputImage, setInputImage] = useState<any>('');
+  const socket = useSocket();
   
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,15 +39,11 @@ export default function CreatePost({ profile }: IProps) {
     }
   };
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const type = ['image/png', 'image/jpeg', 'image/jpg'];
     const file = e.target.files?.[0];
     if (file && type.includes(file.type)) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setInputImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setInputImage(file);
     } else {
       setInputImage(null);
       alert('Chỉ được upload file ảnh');
@@ -57,13 +55,26 @@ export default function CreatePost({ profile }: IProps) {
     try{
       if(router.pathname !== "profile/[id]"){
         if (inputValue.length > 0) {
+          if (inputImage) {
+            const formData = new FormData();
+            formData.append('file', inputImage);
+            formData.append('upload_preset', 'chat-app');
+            formData.append('cloud_name', 'djtl9nh1u');
+
+            const res = await fetch('https://api.cloudinary.com/v1_1/djtl9nh1u/image/upload', {
+              method: 'POST',
+              body: formData,
+            });
+          }
+          console.log(inputImage)
           const res = await createPosts(inputValue, inputImage, user?._id as string)
           if (res) {
-            dispatch(getPostRequest());
-            dispatch(getPostOfUserRequest({ id: user?._id as string }));
-            setInputValue('');
-            setInputImage(null);
-            handleClose();
+              dispatch(getPostRequest());
+              dispatch(getPostOfUserRequest({ id: user?._id as string }));
+              setInputValue('');
+              setInputImage(null);
+              handleClose();
+              socket?.emit('createPost', res.data);
           }
         } else {
           alert('Bạn chưa nhập gì');

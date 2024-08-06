@@ -22,3 +22,11 @@ export const getPostOfUserSuccess = createAction<IPostPayload>(
 export const getPostOfUserFailure = createAction(
     'ACTION/GET_POST_OF_USER_FAILURE',
 )
+
+export const getIdPost = createAction<string>('ACTION/GET_ID_POST')
+
+export const getPost = createAction<{
+    content: string;
+    images: string;
+    idPost: string;
+}>('ACTION/GET_POST')

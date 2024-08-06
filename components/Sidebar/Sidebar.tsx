@@ -9,6 +9,10 @@ import { FaRegUser } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import { searchUsers } from '@/api/user/user'
 import SearchUser from '../SearchUser/SearchUser'
+import { BiSolidMessageRounded } from 'react-icons/bi'
+import { IoMdNotifications } from 'react-icons/io'
+import { MdOutlineApps } from 'react-icons/md'
+import ListUserChat from '../Chat/ListUserChat'
 
 const Sidebar = () => {
   const router = useRouter()
@@ -17,6 +21,16 @@ const Sidebar = () => {
   const [inputValue, setInputValue] = React.useState("");
   const [debouncedValue, setDebouncedValue] = React.useState("");
   const [listUser, setListUser] = React.useState<IUser[]>([]);
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  const handleOpenModal = () => {
+    // setOpenModal(true);
+    setOpenModal(!openModal);
+  };
+
   let timeoutId: NodeJS.Timeout;
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -54,7 +68,7 @@ const Sidebar = () => {
   };
   return (
     <>
-      <div className="flex md:flex-row flex-col items-center justify-between h-full w-full md:py-5 md:px-8 bg-white ">
+      <div className="flex md:flex-row flex-col items-center justify-between h-full w-full md:py-5 md:px-8 bg-white">
         <div className="flex w-1/4 justify-center items-center gap-5">
           <div className="flex w-14">
             <img src="https://cdn.dribbble.com/users/230124/screenshots/16086059/media/55432e3763b3c8c93fd7ba6cde8164ea.jpg?resize=400x0" alt="" className="w-full" />
@@ -108,9 +122,24 @@ const Sidebar = () => {
             );
           })}
         </div>
-        <div className="w-1/4 justify-end md:flex hidden relative cursor-pointer">
-            <div className="p-2 group-hover:opacity-80 font-bold " onClick={toggleDropdown}>
-              {user?.fullName}
+        <div className="w-1/4 justify-end md:flex hidden relative cursor-pointer gap-3">
+            <div className='flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full hover:bg-gray-200 '>
+              <MdOutlineApps />
+            </div>
+            <div className='flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full hover:bg-gray-200 ' onClick={handleOpenModal}>
+              <BiSolidMessageRounded />
+            </div>
+            {
+              openModal && (
+                <div className="fixed inset-24 flex z-50" onClick={handleCloseModal} >
+                  <div className="absolute -right-20 bg-white rounded shadow-lg md:w-1/4" onClick={(e) => e.stopPropagation()}>
+                    <ListUserChat />
+                  </div>
+                </div>
+              )
+            }
+            <div className='flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full hover:bg-gray-200 '>
+              <IoMdNotifications />
             </div>
             <div className="flex items-center justify-center rounded-full overflow-hidden w-10 h-10 hover:rounded-full" onClick={toggleDropdown}>
                 <img src={user?.avatar} alt="Profile" className="rounded-full group-hover:opacity-80" style={{ objectFit: 'cover', aspectRatio: '1 / 1' }} />

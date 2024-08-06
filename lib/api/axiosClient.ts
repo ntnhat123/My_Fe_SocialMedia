@@ -3,6 +3,7 @@ import * as queryString from "querystring";
 import * as https from "https";
 import { configURL } from '@/utils/constant';
 import { getTokenLocalStorage } from '@/Provider/localStorage';
+import { NextResponse } from "next/server";
 
 const config:AxiosRequestConfig = {
     baseURL: configURL.baseURL,
@@ -26,7 +27,10 @@ axiosClient.interceptors.request.use(async(config) => {
 
 axiosClient.interceptors.response.use(
     (response) => {
-        if (response && response.data) {
+        if(response.status == 401){
+            NextResponse.redirect('/login');
+        }
+        if (response && response.data) { 
             return response;
         }
 

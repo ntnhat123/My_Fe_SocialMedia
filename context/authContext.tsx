@@ -122,7 +122,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     ) => {
         try{
             const res = await updateUser(router.query.id as string, fullName, avatar,gender, address, story, mobile);
-            console.log(res)
             if(res){
                     setUser(res.data)
                     toast.success('Cập nhật thành công')
@@ -140,55 +139,41 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const autoLogin = async () => {
         const token =  await getTokenLocalStorage()
-        if(!token){
-            if(router.pathname !== '/register'){
-                router.push('/login')
-            }else{
-                router.push('/register')
-            }
-        }
         try{
+            setLoading(true)
             const res = await loginbyToken(token as string)
             if(res.status === 200){
                 if(res.data.status){
                     setUser(res.data.data)
                     setToken(res.data.token)
-                    setLoading(true)
+
                 }else{
                     setError(res.data.message)
-                    setLoading(false)
                 }
             }else{
                 setError(res.data.message)
-                setLoading(false)
             }
         }catch(error){
-            console.log(error)
+            router.push("/login");
+        }finally{
             setLoading(false)
         }
     }
 
     React.useEffect(() => {
-        autoLogin()
+        autoLogin()        
     },[])
 
     React.useEffect(() => {
         const autoRedirect = async () => {
-          const token = await getTokenLocalStorage();
-          if (!token) {
-            // router.push("/auth");
-          } else {
-            // router.push("/");
-          }
+          await getTokenLocalStorage();
         };
         autoRedirect();
-    }, [user]);
-    
+    }, []);
 
     const logout = async () => {
         try {
             const res = await getLogout();
-            console.log(res)
             if (res.status === 200) {
                 if (res.data.status) {
                 setUser({} as IUser);

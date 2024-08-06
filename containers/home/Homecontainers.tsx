@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import Content from '../../components/MainContent/Content'
 import ProfileLeft from '../../components/Leftprofile/ProfileLeft'
 import RightFriend from '../../components/Right/RightFriend'
@@ -9,26 +9,16 @@ import Link from 'next/link'
 import { useDispatch, useSelector } from "react-redux"
 import { getPostRequest } from '@/redux/post/actions'
 import { profile } from 'console'
+import { postLoading } from '@/redux/post/selectors'
 
-interface IProfile {
-  profile: any
-}
-const Homecontainers = (
-  {profile}: IProfile
-) => {
+const Homecontainers = () => {
   const router = useRouter()
-  const { user } = useAuth()
+  const loading = useSelector(postLoading);
   const dispatch = useDispatch()
   
   useEffect(() => {
-    if(!user){
-      router.push('/login')
-    }
-  },[user])
-
-  useEffect(() => {
-    dispatch(getPostRequest())    
-  },[dispatch])
+    dispatch(getPostRequest())
+  },[])
   
   return <>
       <div className='h-full w-full md:py-3 md:px-5 bg-gray-200 overflow-y-auto no-scrollbar scrollbar-hidden'>
@@ -38,7 +28,7 @@ const Homecontainers = (
             <ProfileLeft/>
           </div>
           <div className='flex flex-2 lg:w-1/3 w-full lg:overflow-y-auto lg:no-scrollbar lg:scrollbar-hidden'>
-            <Content profile={profile} />
+            <Content />
           </div>
           <div className='hidden md:flex flex-1 lg:w-1/3 w-full lg:flex-col px-5'>
             {/* <RightFriend /> */}

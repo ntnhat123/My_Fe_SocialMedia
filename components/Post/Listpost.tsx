@@ -4,10 +4,10 @@ import { FaEllipsisH, FaRegComment } from 'react-icons/fa'
 import { PiShareFat } from 'react-icons/pi'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/authContext'
-import { getPost, updatePosts } from '@/api/post/post'
+// import { getPost, updatePosts } from '@/api/post/post'
 import { IPost } from '@/model/post'
 import { useDispatch, useSelector } from "react-redux"
-import { getPostRequest , getPostSuccess, getPostFailure,getPostOfUserRequest,getPostOfUserFailure,getPostOfUserSuccess } from '@/redux/post/actions'
+import { getPostRequest , getPostSuccess, getPostFailure,getPostOfUserRequest,getPost,getPostOfUserFailure,getPostOfUserSuccess } from '@/redux/post/actions'
 import { postList,postListUser } from '@/redux/post/selectors'
 import { deletePosts,likePost } from '@/api/post/post'
 import { MdOutlineClose } from 'react-icons/md'
@@ -15,6 +15,8 @@ import CreatePost from '@/components/Post/Createpost'
 import Comments from '@/components/Comments/Comments'
 import CommentContainer from '../Comments/CommentContainer'
 import EditPost from './ModalEditPost'
+import { useSocket } from '@/context/socketContext'
+import { emit } from 'process'
 
 // interface IPropsPost {
 //     postOfUser: IPost
@@ -31,12 +33,12 @@ const Listpost = () => {
     const [deletePostId, setDeletePostId] = React.useState<string | null>(null);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [showComment, setShowComment] = React.useState<Record<string, boolean>>({});
-    const [likedPosts, setLikedPosts] = React.useState<string[]>([]);
     const [showUpdatePost, setShowUpdatePost] = React.useState(false);
     const [open, setOpen] = useState(false);
     const [postEdit, setEditPost] = useState<IPost>({} as IPost);
     const [openmodelEditPost, setOpenmodelEditPost] = useState(false);
-    
+    const socket = useSocket()
+
     const handleOpen = (id: string) => {
         setOpen(true);
         const post = listposts?.find((post) => post._id === id);
@@ -51,17 +53,45 @@ const Listpost = () => {
           [postId]: !prevShowComments[postId],
         }));
     };
+
     useEffect(() => {
         if (Array.isArray(listposts)) {
             const sortedPosts = [...listposts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
             setPost(sortedPosts);
         }
-    }, [listposts]);
+        socket?.on('getPost', handleGetPostsSocket);
+        return () => {
+            socket?.off('getPost');
+        }
+    }, [listposts,socket]);
 
     const handleDeletePost = (idPost: string) => {
         setDeletePostId(idPost);
         setModalVisible(true);
     };
+
+    const handleGetPostsSocket = (data: IPost) => {
+        setPost(prevPosts => [data, ...prevPosts]);
+    };       
+
+    const handleGetLikePostSocket = (data: IPost) => {
+        setPost((prevList) => {
+        const updatedList = prevList.map((post) => {
+          if (post._id === data._id) {
+            return { ...data };
+          }
+          return post;
+        });
+        return updatedList;
+      });
+    };
+        
+    useEffect(() => {
+        socket?.on('getLikePost', handleGetLikePostSocket);
+        return () => {
+            socket?.off('getLikePost');
+        }
+    }, [socket]);
 
     const confirmDeletePost = async (idPost: string) => {
         try {
@@ -82,16 +112,14 @@ const Listpost = () => {
 
     const handleLikePost = async (idPost: string) => {
         try{
-            const isAlreadyLiked = likedPosts.includes(idPost);
-            await likePost(idPost);
-            if (isAlreadyLiked) {
+            const res = await likePost(idPost);
+            if ( res ) {
                 if(router.pathname === "/profile/[id]"){
                     dispatch(getPostOfUserRequest({id: router.query.id as string}))
                 }else{
                     dispatch(getPostRequest());
+                    socket?.emit('likePost', res.data);
                 }
-            } else {
-                dispatch(getPostRequest());
             }
         }catch(error){
             console.log(error)
@@ -198,8 +226,7 @@ const Listpost = () => {
                     </div>
                     
                 ))
-            } 
-          
+            }           
         </div>
     )
 }
